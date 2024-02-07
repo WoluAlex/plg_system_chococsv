@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor configVersion="3"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xmlns="https://www.phpdoc.org"
+			   xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
+>
+	<paths>
+		<output>docs/api</output>
+	</paths>
+	<!--Zero or more repetitions:-->
+	<version number="3.0">
+		<!--Optional:-->
+		<folder>latest</folder>
+		<!--Zero or more repetitions:-->
+		<api format="php">
+			<source dsn=".">
+				<!--1 or more repetitions:-->
+				<path>src</path>
+			</source>
+			<!--Optional:-->
+			<output>docs/api</output>
+			<!--Optional:-->
+			<ignore hidden="true" symlinks="true">
+				<!--1 or more repetitions:-->
+				<path>tests/**</path>
+				<path>vendor/**</path>
+			</ignore>
+			<!--Optional:-->
+			<extensions>
+				<!--1 or more repetitions:-->
+				<extension>php</extension>
+			</extensions>
+			<!--Optional:-->
+			<visibility>public</visibility>
+			<!--Optional:-->
+			<default-package-name>Project</default-package-name>
+			<!--Optional:-->
+			<include-source>true</include-source>
+			<!--Optional:-->
+			<markers>
+				<!--1 or more repetitions:-->
+				<marker>TODO</marker>
+				<marker>FIXME</marker>
+				<marker>NOTE</marker>
+				<marker>REVIEW</marker>
+			</markers>
+		</api>
+	</version>
+	<!--Zero or more repetitions:-->
+	<setting name="template.color" value="cyan"/>
+</phpdocumentor>

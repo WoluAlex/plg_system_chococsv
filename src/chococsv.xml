@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="console" method="upgrade">
+	<name>PLG_CONSOLE_CHOCOCSV</name>
+	<creationDate>2024-01-23</creationDate>
+	<author>Mr Alexandre J-S William ELISÉ</author>
+	<authorEmail>code@apiadept.com</authorEmail>
+	<authorUrl>https://apiadept.com</authorUrl>
+	<copyright>Copyright (c) 2009 - present. Mr Alexandre J-S William ELISÉ</copyright>
+	<license>AGPL-3.0-or-later</license>
+	<version>0.1.5</version>
+	<description>PLG_CONSOLE_CHOCOCSV_XML_DESCRIPTION</description>
+	<namespace path="src">AlexApi\Plugin\Console\Chococsv</namespace>
+
+	<!-- Scripts to run on installation -->
+	<scriptfile>script.php</scriptfile>
+
+	<!-- Media files -->
+	<media folder="media" destination="plg_console_chococsv">
+		<folder>data</folder>
+		<folder>report</folder>
+	</media>
+
+	<!-- Plugin files -->
+	<files>
+		<folder>forms</folder>
+		<folder>src</folder>
+		<folder plugin="chococsv">services</folder>
+		<filename>script.php</filename>
+	</files>
+
+	<!-- Language files -->
+	<languages folder="language">
+		<language tag="en-GB">en-GB/plg_console_chococsv.ini</language>
+		<language tag="en-GB">en-GB/plg_console_chococsv.sys.ini</language>
+		<language tag="fr-FR">fr-FR/plg_console_chococsv.ini</language>
+		<language tag="fr-FR">fr-FR/plg_console_chococsv.sys.ini</language>
+	</languages>
+
+	<!-- Changelog files -->
+	<changelogurl>https://update.example.org/changelog/?extension=chococsv&amp;prefix=plg_&amp;type=plugin&amp;group=&amp;content&amp;version=0.1.0&amp;format=xml</changelogurl>
+
+	<!-- Update servers -->
+	<updateservers>
+		<server type="extension" name="Chococsv Updates">https://update.example.org/extension/?extension=chococsv&amp;prefix=plg_&amp;type=plugin&amp;group=&amp;content&amp;version=0.1.0&amp;format=xml</server>
+	</updateservers>
+	<dlid prefix="dlid=" suffix="" />
+
+	<!-- Config params -->
+	<config>
+		<fieldset name="basic">
+			<field name="is_local"
+				   type="radio"
+				   default="1"
+				   label="PLG_CONSOLE_CHOCOCSV_IS_LOCAL_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_IS_LOCAL_DESCRIPTION"
+				   layout="joomla.form.field.radio.switcher"
+				   filter="integer"
+				   required="true"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field name="local_file"
+				   type="filelist"
+				   directory="media/plg_console_chococsv/data"
+				   filter="([a-zA-Z\-\_]{1,50})\.csv"
+				   exclude="(.+)\.(html|php|exe|py|js|java)"
+				   showon="is_local:1"
+				   label="PLG_CONSOLE_CHOCOCSV_LOCAL_FILE_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_LOCAL_FILE_DESCRIPTION"
+				   icon="file"
+			/>
+			<field name="remote_file"
+				   type="url"
+				   scheme="https"
+				   relative="false"
+				   hint="https://example.org/sample-data.csv"
+				   default=""
+				   maxlength="400"
+				   label="PLG_CONSOLE_CHOCOCSV_REMOTE_FILE_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_REMOTE_FILE_DESCRIPTION"
+				   showon="is_local:0"
+				   icon="globe"
+			/>
+			<field
+			   name="what_line_numbers_you_want"
+			   type="text"
+			   default=""
+			   hint="9,7-7,2-4,10,17-14,21"
+			   label="PLG_CONSOLE_CHOCOCSV_WHAT_LINE_NUMBERS_YOU_WANT_LABEL"
+			   description="PLG_CONSOLE_CHOCOCSV_WHAT_LINE_NUMBERS_YOU_WANT_DESCRIPTION"
+			   icon="printer"
+			/>
+
+			<field name="destinations"
+				   type="subform"
+				   label="PLG_CONSOLE_CHOCOCSV_DESTINATIONS_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_DESTINATIONS_DESCRIPTION"
+				   formsource="plugins/console/chococsv/forms/tokenindex.xml"
+				   multiple="true"
+				   min="1"
+				   groupByFieldset="true"
+				   layout="joomla.form.field.subform.repeatable-table"
+				   icon="list"
+				   required="true"
+			/>
+		</fieldset>
+		<fieldset name="advanced">
+			<field name="extra_features" type="spacer" class="text" label="PLG_CONSOLE_CHOCOCSV_EXTRA_FEATURES_LABEL" />
+			<field name="show_ascii_banner"
+				   type="radio"
+				   default="0"
+				   label="PLG_CONSOLE_CHOCOCSV_SHOW_ASCII_BANNER_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_SHOW_ASCII_BANNER_DESCRIPTION"
+				   layout="joomla.form.field.radio.switcher"
+				   filter="integer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field name="silent_mode"
+				   type="radio"
+				   default="0"
+				   label="PLG_CONSOLE_CHOCOCSV_SILENT_MODE_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_SILENT_MODE_DESCRIPTION"
+				   layout="joomla.form.field.radio.buttons"
+				   filter="integer"
+			>
+				<option value="0">PLG_CONSOLE_CHOCOCSV_SILENT_MODE_0_LABEL</option>
+				<option value="1">PLG_CONSOLE_CHOCOCSV_SILENT_MODE_1_LABEL</option>
+				<option value="2">PLG_CONSOLE_CHOCOCSV_SILENT_MODE_2_LABEL</option>
+			</field>
+			<field name="save_report_to_file"
+				   type="radio"
+				   default="0"
+				   label="PLG_CONSOLE_CHOCOCSV_SAVE_REPORT_TO_FILE_LABEL"
+				   description="PLG_CONSOLE_CHOCOCSV_SAVE_REPORT_TO_FILE_DESCRIPTION"
+				   layout="joomla.form.field.radio.buttons"
+				   filter="integer"
+			>
+				<option value="0">PLG_CONSOLE_CHOCOCSV_SAVE_REPORT_TO_FILE_0_LABEL</option>
+				<option value="1">PLG_CONSOLE_CHOCOCSV_SAVE_REPORT_TO_FILE_1_LABEL</option>
+				<option value="2">PLG_CONSOLE_CHOCOCSV_SAVE_REPORT_TO_FILE_2_LABEL</option>
+			</field>
+		</fieldset>
+	</config>
+</extension>
