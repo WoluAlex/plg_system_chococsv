@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -19,73 +20,117 @@ use Joomla\DI\ServiceProviderInterface;
 defined('_JEXEC') or die;
 
 return new class () implements ServiceProviderInterface {
-	public function register(Container $container)
-	{
-		$container->set(InstallerScriptInterface::class,
-			new class ($container->get(AdministratorApplication::class))
-				extends InstallerScript
-				implements InstallerScriptInterface {
-				/**
-				 * Minimum PHP version to check
-				 *
-				 * @var    string
-				 * @since  0.1.0
-				 */
-				protected $minimumPhp = '8.1.0';
+    public function register(Container $container)
+    {
+        $container->set(
+            InstallerScriptInterface::class,
+            new class ($container->get(AdministratorApplication::class))
+                extends InstallerScript
+                implements InstallerScriptInterface {
+                /**
+                 * Minimum PHP version to check
+                 *
+                 * @var    string
+                 * @since  0.1.0
+                 */
+                protected $minimumPhp = '8.1.0';
 
-				/**
-				 * Minimum Joomla version to check
-				 *
-				 * @var    string
-				 * @since  0.1.0
-				 */
-				protected $minimumJoomla = '5.0.0';
+                /**
+                 * Minimum Joomla version to check
+                 *
+                 * @var    string
+                 * @since  0.1.0
+                 */
+                protected $minimumJoomla = '5.0.0';
 
-				private $app;
+                private $app;
 
-				public function __construct(AdministratorApplication $app)
-				{
-					$this->app = $app;
-				}
+                protected $deleteFolders = [
+                    '/plugins/console/chococsv/forms',
+                    '/plugins/console/chococsv/language',
+                    '/plugins/console/chococsv/services',
+                    '/plugins/console/chococsv/src',
+                ];
 
-				public function preflight($type, $parent): bool
-				{
-					$this->app->enqueueMessage(sprintf('%s %s version: %s', ucfirst($type), $parent->getManifest()->name, $parent->getManifest()->version));
+                public function __construct(AdministratorApplication $app)
+                {
+                    $this->app = $app;
+                }
 
-					// Not called automatically
-					$this->removeFiles();
+                public function preflight($type, $parent): bool
+                {
+                    $this->app->enqueueMessage(
+                        sprintf(
+                            '%s %s version: %s',
+                            ucfirst($type),
+                            $parent->getManifest()->name,
+                            $parent->getManifest()->version
+                        )
+                    );
 
-					return true;
-				}
+                    // Not called automatically
+                    $this->removeFiles();
+
+                    return true;
+                }
 
 
-				public function postflight($type, $parent): bool
-				{
-					$this->app->enqueueMessage(sprintf('%s %s version: %s', ucfirst($type), $parent->getManifest()->name, $parent->getManifest()->version));
+                public function postflight($type, $parent): bool
+                {
+                    $this->app->enqueueMessage(
+                        sprintf(
+                            '%s %s version: %s',
+                            ucfirst($type),
+                            $parent->getManifest()->name,
+                            $parent->getManifest()->version
+                        )
+                    );
 
-					return true;
-				}
+                    return true;
+                }
 
-				public function install($parent): bool
-				{
-					$this->app->enqueueMessage(sprintf('%s %s version: %s', 'Install', $parent->getManifest()->name, $parent->getManifest()->version));
+                public function install($parent): bool
+                {
+                    $this->app->enqueueMessage(
+                        sprintf(
+                            '%s %s version: %s',
+                            'Install',
+                            $parent->getManifest()->name,
+                            $parent->getManifest()->version
+                        )
+                    );
 
-					return true;
-				}
+                    return true;
+                }
 
-				public function update($parent): bool
-				{
-					$this->app->enqueueMessage(sprintf('%s %s version: %s', 'Update', $parent->getManifest()->name, $parent->getManifest()->version));
+                public function update($parent): bool
+                {
+                    $this->app->enqueueMessage(
+                        sprintf(
+                            '%s %s version: %s',
+                            'Update',
+                            $parent->getManifest()->name,
+                            $parent->getManifest()->version
+                        )
+                    );
 
-					return true;
-				}
+                    return true;
+                }
 
-				public function uninstall($parent): bool
-				{
-					$this->app->enqueueMessage(sprintf('%s %s version: %s', 'Uninstall', $parent->getManifest()->name, $parent->getManifest()->version));
+                public function uninstall($parent): bool
+                {
+                    $this->app->enqueueMessage(
+                        sprintf(
+                            '%s %s version: %s',
+                            'Uninstall',
+                            $parent->getManifest()->name,
+                            $parent->getManifest()->version
+                        )
+                    );
 
-					return true;
-				}
-			});
-	}
+                    return true;
+                }
+            }
+        );
+    }
 };
