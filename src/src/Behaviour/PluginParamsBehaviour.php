@@ -31,7 +31,7 @@ trait PluginParamsBehaviour
      *
      * @var string $_name
      */
-    protected string $_name = 'poet';
+    protected string $_name = 'chococsv';
 
     /**
      * Get configured plugin params

@@ -175,7 +175,7 @@ TEXT;
 
         $this->consoleOutputStyle = new SymfonyStyle($input, $output);
 
-        $this->consoleOutputStyle->title(Text::_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE'));
+        $this->consoleOutputStyle->title($this->language->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE'));
 
         ini_set('auto_detect_line_endings', true);
 
@@ -290,7 +290,7 @@ TEXT;
             $this->deployScript();
         } catch (Throwable $e) {
             $this->consoleOutputStyle->error(
-                Text::sprintf(
+                $this->language->sprintf(
                     'PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION',
                     $e->getMessage(),
                     $e->getLine(),
@@ -317,7 +317,7 @@ TEXT;
         $help = "<info>%command.name%</info>Génerer Article.
 		\nUsage: <info>php %command.full_name%</info>\n";
 
-        $this->setDescription('Génerer Article avec données synthétiques.');
+        $this->setDescription($this->language->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION'));
         $this->setHelp($help);
     }
 

@@ -8,18 +8,18 @@
 				   description="PLG_CONSOLE_CHOCOCSV_TOKEN_INDEX_DESCRIPTION"
 				   filter="alnum"
 				   hint="app001"
-
 			/>
             <field name="base_url"
                    type="url"
                    default="https://example.org"
                    label="PLG_CONSOLE_CHOCOCSV_BASE_URL_LABEL"
                    description="PLG_CONSOLE_CHOCOCSV_BASE_URL_DESCRIPTION"
-                   scheme="https"
+                   scheme="http,https"
                    size="100"
 				   maxlength="100"
                    validate="url"
                    required="true"
+				   icon="globe"
             />
             <field name="base_path"
                    type="url"
