@@ -23,6 +23,11 @@
     "symfony/dotenv": "@stable",
     "phpunit/phpunit": "@stable"
   },
+  "autoload": {
+    "psr-4": {
+      "AlexApi\\Plugin\\Console\\Chococsv\\":"src/src/"
+    }
+  },
   "autoload-dev": {
     "psr-4": {
       "Tests\\": "Tests/"

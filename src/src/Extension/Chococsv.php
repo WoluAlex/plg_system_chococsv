@@ -63,8 +63,8 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         parent::__construct($subject, $config);
 
         // Make sure we are in CLI application before going further
-        if (!Factory::getApplication()->isClient('cli')) {
-            Factory::getApplication()->enqueueMessage(
+        if (!$this->getApplication()->isClient('cli')) {
+            $this->getApplication()->enqueueMessage(
                 'This does not seem to be a CLI Application. Cannot continue.',
                 'warning'
             );
@@ -90,7 +90,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         $commands = $this->allowedCommands();
         foreach ($commands as $command) {
             if (!($command instanceof AbstractCommand)) {
-                Factory::getApplication()->enqueueMessage(
+                $this->getApplication()->enqueueMessage(
                     'Command seems to have invalid type. Cannot continue.',
                     'warning'
                 );
@@ -99,7 +99,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             }
 
             // Everything seems ok. Add the Command
-            Factory::getApplication()->addCommand($command);
+            $this->getApplication()->addCommand($command);
         }
     }
 

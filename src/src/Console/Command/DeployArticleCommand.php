@@ -23,15 +23,19 @@ namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
 use AlexApi\Plugin\Console\Chococsv\Behaviour\PluginParamsBehaviour;
 use AlexApi\Plugin\Console\Chococsv\Behaviour\WebserviceToolboxBehaviour;
 use DomainException;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\ConsoleApplication;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Console\Command\AbstractCommand;
+use Joomla\DI\Container;
 use Joomla\DI\ContainerAwareInterface;
 use Joomla\DI\ContainerAwareTrait;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Path;
 use Joomla\Http\TransportInterface;
+use Joomla\Language\Language;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
@@ -49,6 +53,7 @@ use function array_intersect;
 use function array_intersect_key;
 use function array_merge;
 use function array_unique;
+use function assert;
 use function count;
 use function define;
 use function defined;
@@ -57,6 +62,7 @@ use function fclose;
 use function feof;
 use function file_exists;
 use function fopen;
+use function get_class;
 use function in_array;
 use function ini_set;
 use function is_readable;
@@ -158,6 +164,18 @@ TEXT;
 
     private array $basePath = [];
 
+    private Language|null $language = null;
+
+    private function getComputedLanguage(Container|null $givenContainer = null): Language
+    {
+        $container = $givenContainer ?? Factory::getContainer();
+        // Console uses the default system language
+        $config = $container->get('config');
+        $locale = $config->get('language');
+        $debug  = $config->get('debug_lang');
+
+       return $container->get(LanguageFactoryInterface::class)->createLanguage($locale, $debug);
+    }
 
     /**
      * Internal function to execute the command.
@@ -280,12 +298,20 @@ TEXT;
             $this->basePath = ArrayHelper::getColumn($computedDestinationsToArray, 'base_path', 'token_index');
 
             // Other Joomla articles fields
-            $this->extraDefaultFieldKeys = ArrayHelper::getColumn($computedDestinationsToArray,'extra_default_fields', 'token_index');
+            $this->extraDefaultFieldKeys = ArrayHelper::getColumn(
+                $computedDestinationsToArray,
+                'extra_default_fields',
+                'token_index'
+            );
 
 // Add custom fields support (shout-out to Marc DECHÈVRE : CUSTOM KING)
 // The keys are the columns in the csv with the custom fields names (that's how Joomla! Web Services Api work as of today)
 // For the custom fields to work they need to be added in the csv and to exists in the Joomla! site.
-            $this->customFieldKeys = ArrayHelper::getColumn($computedDestinationsToArray,'custom_fields', 'token_index');
+            $this->customFieldKeys = ArrayHelper::getColumn(
+                $computedDestinationsToArray,
+                'custom_fields',
+                'token_index'
+            );
 
             $this->deployScript();
         } catch (Throwable $e) {
@@ -314,6 +340,13 @@ TEXT;
      */
     protected function configure(): void
     {
+        $computedLanguage = $this->getComputedLanguage();
+        assert(
+            $computedLanguage instanceof Language,
+            sprintf('%s is not an instance of Language', get_class($computedLanguage))
+        );
+        $this->language = $computedLanguage;
+
         $help = "<info>%command.name%</info>Génerer Article.
 		\nUsage: <info>php %command.full_name%</info>\n";
 
