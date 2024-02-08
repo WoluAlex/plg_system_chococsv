@@ -47,6 +47,7 @@
 				label="PLG_CONSOLE_CHOCOCSV_EXTRA_DEFAULT_FIELDS_LABEL"
 				description="PLG_CONSOLE_CHOCOCSV_EXTRA_DEFAULT_FIELDS_DESCRIPTION"
 				hint="publish_up,publish_down,featured,featured_up,featured_down,images,urls"
+				multiple="true"
 				required="false"
 			>
 				<option value="publish_up">publish_up</option>
@@ -66,6 +67,7 @@
 				query="SELECT f.name, f.title FROM #__fields AS f WHERE f.context = 'com_content.article' AND f.state = 1"
 				key_field="name"
 				value_field="title"
+				multiple="true"
 				required="false"
 				header="PLG_CONSOLE_CHOCOCSV_CHOOSE_AN_OPTION_LABEL"
 			/>
