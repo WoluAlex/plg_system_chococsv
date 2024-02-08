@@ -291,17 +291,17 @@ TEXT;
             $computedDestinationsToArray = $computedDestinations->toArray();
 
             // Your Joomla! website base url
-            $this->baseUrl = ArrayHelper::getColumn($computedDestinationsToArray, 'base_url', 'token_index');
+            $this->baseUrl = ArrayHelper::getColumn($computedDestinationsToArray, 'base_url', 'token_ref');
 
             // Your Joomla! Api Token (DO NOT STORE IT IN YOUR REPO USE A VAULT OR A PASSWORD MANAGER)
-            $this->token    = ArrayHelper::getColumn($computedDestinationsToArray, 'api_authtoken', 'token_index');
-            $this->basePath = ArrayHelper::getColumn($computedDestinationsToArray, 'base_path', 'token_index');
+            $this->token    = ArrayHelper::getColumn($computedDestinationsToArray, 'api_authtoken', 'token_ref');
+            $this->basePath = ArrayHelper::getColumn($computedDestinationsToArray, 'base_path', 'token_ref');
 
             // Other Joomla articles fields
             $this->extraDefaultFieldKeys = ArrayHelper::getColumn(
                 $computedDestinationsToArray,
                 'extra_default_fields',
-                'token_index'
+                'token_ref'
             );
 
 // Add custom fields support (shout-out to Marc DECHÈVRE : CUSTOM KING)
@@ -310,7 +310,7 @@ TEXT;
             $this->customFieldKeys = ArrayHelper::getColumn(
                 $computedDestinationsToArray,
                 'custom_fields',
-                'token_index'
+                'token_ref'
             );
 
             $this->deployScript();
