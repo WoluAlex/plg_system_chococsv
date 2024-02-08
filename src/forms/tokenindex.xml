@@ -42,7 +42,7 @@
             />
 			<field
 				name="extra_default_fields"
-				type="combo"
+				type="list"
 				default=""
 				label="PLG_CONSOLE_CHOCOCSV_EXTRA_DEFAULT_FIELDS_LABEL"
 				description="PLG_CONSOLE_CHOCOCSV_EXTRA_DEFAULT_FIELDS_DESCRIPTION"
