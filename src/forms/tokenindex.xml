@@ -6,7 +6,6 @@
 				   type="text"
 				   label="PLG_CONSOLE_CHOCOCSV_TOKEN_INDEX_LABEL"
 				   description="PLG_CONSOLE_CHOCOCSV_TOKEN_INDEX_DESCRIPTION"
-				   pattern="^[a-zA-Z]{1,20}\-?[a-zA-Z0-9]{1,19}$"
 				   hint="Ex: app-001,web42,Site123,APP,WEB123,SITE-123"
 				   size="50"
 				   maxlength="40"
