@@ -155,6 +155,8 @@ TEXT;
     private array $successfulCsvLines = [];
 
     private bool $isDone = false;
+
+    private array $expandedLineNumbers = [];
     private bool $isExpanded = false;
     private int $saveReportToFile = 0;
 
@@ -273,8 +275,8 @@ TEXT;
             ) : ''
         );
 
-        $expandedLineNumbers = $this->chooseLinesLikeAPrinter($this->whatLineNumbersYouWant);
-        $this->isExpanded    = ($expandedLineNumbers !== []);
+        $this->expandedLineNumbers = $this->chooseLinesLikeAPrinter($this->whatLineNumbersYouWant);
+        $this->isExpanded    = ($this->expandedLineNumbers !== []);
 
 
         try {
@@ -316,8 +318,7 @@ TEXT;
             $this->deployScript();
         } catch (Throwable $e) {
             $this->consoleOutputStyle->error(
-                $this->language->sprintf(
-                    'PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION',
+                sprintf('%s%d%s%s',
                     $e->getMessage(),
                     $e->getLine(),
                     $e->getTraceAsString(),
