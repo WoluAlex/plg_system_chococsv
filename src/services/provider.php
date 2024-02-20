@@ -29,6 +29,49 @@ return new class implements ServiceProviderInterface {
             return;
         }
 
+        // Define component path.
+        $option = 'com_chococsv';
+        if (!\defined('JPATH_COMPONENT')) {
+            /**
+             * Defines the path to the active component for the request
+             *
+             * Note this constant is application aware and is different for each application (site/admin).
+             *
+             * @var    string
+             * @since       1.5
+             *
+             * @deprecated  4.3 will be removed in 6.0
+             *              Will be removed without replacement
+             */
+            \define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
+        }
+
+        if (!\defined('JPATH_COMPONENT_SITE')) {
+            /**
+             * Defines the path to the site element of the active component for the request
+             *
+             * @var    string
+             * @since       1.5
+             *
+             * @deprecated  4.3 will be removed in 6.0
+             *              Will be removed without replacement
+             */
+            \define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
+        }
+
+        if (!\defined('JPATH_COMPONENT_ADMINISTRATOR')) {
+            /**
+             * Defines the path to the admin element of the active component for the request
+             *
+             * @var    string
+             * @since       1.5
+             *
+             * @deprecated  4.3 will be removed in 6.0
+             *              Will be removed without replacement
+             */
+            \define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
+        }
+
         $component = $container->get(AdministratorApplication::class)->bootComponent('chococsv');
 
         $container->set(PluginInterface::class, function (Container $container) {
