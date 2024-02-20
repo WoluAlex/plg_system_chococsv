@@ -82,7 +82,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
             $this->consoleOutputStyle->error(
                 sprintf(
                     '[%d] %s %s:%d Trace: %s Previous: %s',
-                    $e->getCode,
+                    $e->getCode(),
                     $e->getMessage(),
                     $e->getFile(),
                     $e->getLine(),
