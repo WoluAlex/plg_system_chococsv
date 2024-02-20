@@ -105,7 +105,9 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
 
     private function allowedCommands(): Generator
     {
-        yield new DeployArticleConsoleCommand();
+        $deployArticleConsoleCommand = new DeployArticleConsoleCommand();
+        $deployArticleConsoleCommand->setContainer(Factory::getContainer());
+        yield $deployArticleConsoleCommand;
     }
 
 

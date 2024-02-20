@@ -21,16 +21,16 @@ declare(strict_types=1);
 namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
 
 use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
-use AlexApi\Plugin\Console\Chococsv\Behaviour\PluginParamsBehaviour;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\LanguageFactoryInterface;
+use Joomla\CMS\Language\LanguageFactory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\Container;
 use Joomla\DI\ContainerAwareInterface;
 use Joomla\DI\ContainerAwareTrait;
 use Joomla\Language\Language;
-use src\Behaviour\WebserviceToolboxBehaviour;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,17 +41,6 @@ use function assert;
 use function defined;
 use function get_class;
 use function sprintf;
-
-use const ANSI_COLOR_BLUE;
-use const ANSI_COLOR_GREEN;
-use const ANSI_COLOR_NORMAL;
-use const ANSI_COLOR_RED;
-use const CSV_ENCLOSURE;
-use const CSV_ESCAPE;
-use const CSV_SEPARATOR;
-use const CSV_START;
-use const CUSTOM_LINE_END;
-use const IS_CLI;
 
 defined('_JEXEC') || die;
 
@@ -78,17 +67,15 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
      */
     protected static $defaultName = 'chococsv:deploy:articles';
 
-    private Language|null $language = null;
+    private Text|null $languageText = null;
 
-    private function getComputedLanguage(Container|null $givenContainer = null): Language
+    private SymfonyStyle|null $consoleOutputStyle = null;
+
+    private function getComputedLanguage(Container|null $givenContainer = null): Text
     {
         $container = $givenContainer ?? Factory::getContainer();
-        // Console uses the default system language
-        $config = $container->get('config');
-        $locale = $config->get('language');
-        $debug  = $config->get('debug_lang');
 
-        return $container->get(LanguageFactoryInterface::class)->createLanguage($locale, $debug);
+        return $container->get(LanguageFactory::class)->getText();
     }
 
     /**
@@ -107,7 +94,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
         $this->consoleOutputStyle = new SymfonyStyle($input, $output);
 
-        $this->consoleOutputStyle->title($this->language->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE'));
+        $this->consoleOutputStyle->title($this->languageText->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE'));
 
         try {
             $this->deploy();
@@ -142,12 +129,12 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
             $computedLanguage instanceof Language,
             sprintf('%s is not an instance of Language', get_class($computedLanguage))
         );
-        $this->language = $computedLanguage;
+        $this->languageText = $computedLanguage;
 
         $help = "<info>%command.name%</info>Génerer Article.
 		\nUsage: <info>php %command.full_name%</info>\n";
 
-        $this->setDescription($this->language->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION'));
+        $this->setDescription($this->languageText->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION'));
         $this->setHelp($help);
     }
 
@@ -156,7 +143,8 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         /**
          * @var MVCFactoryInterface $mvcFactory
          */
-        $mvcFactory = $this->getContainer()->get(SiteApplication::class)
+        $mvcFactory = Factory::getContainer()
+            ->get(SiteApplication::class)
             ->bootComponent('chococsv')->getMVCFactory();
 
         $mvcFactory->createController('Csv', 'Site')
