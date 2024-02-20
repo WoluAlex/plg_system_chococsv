@@ -121,7 +121,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
                 $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION')
             );
         } catch (Throwable $e) {
-            $this->consoleOutputStyle->error($e->getMessage());
+            echo $e->getMessage() . PHP_EOL;
         }
     }
 
