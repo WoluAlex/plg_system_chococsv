@@ -24,10 +24,8 @@ use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\LanguageFactoryInterface;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
-use Joomla\DI\Container;
 use Joomla\DI\ContainerAwareInterface;
 use Joomla\DI\ContainerAwareTrait;
 use Joomla\Language\Language;
@@ -67,15 +65,19 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
      */
     protected static $defaultName = 'chococsv:deploy:articles';
 
-    private Text|null $languageText = null;
-
     private SymfonyStyle|null $consoleOutputStyle = null;
 
-    private function getComputedLanguage(Container|null $givenContainer = null): Text
-    {
-        $container = $givenContainer ?? Factory::getContainer();
+    private Language|null $language = null;
 
-        return $container->get(LanguageFactoryInterface::class)->getText();
+    private function getComputedLanguage(): Language
+    {
+        $container = $this->getContainer() ?? Factory::getContainer();
+        // Console uses the default system language
+        $config = $container->get('config');
+        $locale = $config->get('language');
+        $debug  = $config->get('debug_lang');
+
+        return $container->get(LanguageFactoryInterface::class)->createLanguage($locale, $debug);
     }
 
     /**
@@ -94,7 +96,9 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
         $this->consoleOutputStyle = new SymfonyStyle($input, $output);
 
-        $this->consoleOutputStyle->title($this->languageText->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE'));
+        $this->consoleOutputStyle->title(
+            $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE')
+        );
 
         try {
             $this->deploy();
@@ -129,12 +133,12 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
             $computedLanguage instanceof Language,
             sprintf('%s is not an instance of Language', get_class($computedLanguage))
         );
-        $this->languageText = $computedLanguage;
+        $this->language = $computedLanguage;
 
         $help = "<info>%command.name%</info>Génerer Article.
 		\nUsage: <info>php %command.full_name%</info>\n";
 
-        $this->setDescription($this->languageText->_('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION'));
+        $this->setDescription($this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION'));
         $this->setHelp($help);
     }
 
