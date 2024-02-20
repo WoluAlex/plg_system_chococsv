@@ -24,7 +24,6 @@ use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Language;
-use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\ContainerAwareInterface;
@@ -35,9 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
-use function assert;
 use function defined;
-use function get_class;
 use function sprintf;
 
 defined('_JEXEC') || die;
@@ -53,11 +50,6 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
     use ContainerAwareTrait;
 
     /**
-     * @var InputInterface|null $input
-     */
-    private ?InputInterface $input = null;
-
-    /**
      * The default command name
      *
      * @var    string
@@ -71,13 +63,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
     private function getComputedLanguage(): Language
     {
-        $container = Factory::getContainer();
-        // Console uses the default system language
-        $config = $container->get('config');
-        $locale = $config->get('language');
-        $debug  = $config->get('debug_lang');
-
-        $lang = $container->get(LanguageFactoryInterface::class)->createLanguage($locale, $debug);
+        $lang = $this->getApplication()->getLanguage() || Factory::getApplication()->getLanguage();
         $lang->load('plg_console_chococsv') || $lang->load('com_chococsv');
 
         return $lang;
@@ -95,15 +81,13 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
      */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        $this->input = $input;
-
-        $this->consoleOutputStyle = new SymfonyStyle($input, $output);
-
-        $this->consoleOutputStyle->title(
-            $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE')
-        );
-
         try {
+            $this->consoleOutputStyle = new SymfonyStyle($input, $output);
+
+            $this->consoleOutputStyle->title(
+                $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE')
+            );
+
             $this->deploy();
         } catch (Throwable $e) {
             $this->consoleOutputStyle->error(
@@ -131,18 +115,14 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
      */
     protected function configure(): void
     {
-        $computedLanguage = $this->getComputedLanguage();
-        assert(
-            $computedLanguage instanceof Language,
-            sprintf('%s is not an instance of Language', get_class($computedLanguage))
-        );
-        $this->language = $computedLanguage;
-
-        $help = "<info>%command.name%</info>Génerer Article.
-		\nUsage: <info>php %command.full_name%</info>\n";
-
-        $this->setDescription($this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION'));
-        $this->setHelp($help);
+        try {
+            $this->language = $this->getComputedLanguage();
+            $this->setDescription(
+                $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION')
+            );
+        } catch (Throwable $e) {
+            $this->consoleOutputStyle->error($e->getMessage());
+        }
     }
 
     public function deploy()
