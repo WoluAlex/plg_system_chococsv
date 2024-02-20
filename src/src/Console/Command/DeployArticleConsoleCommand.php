@@ -121,7 +121,13 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         $mvcFactory = $siteApplication
             ->bootComponent('chococsv')->getMVCFactory();
 
-        $mvcFactory->createController('Csv', 'Site', [], $siteApplication, $siteApplication->getInput())
+        $mvcFactory->createController(
+            'Csv',
+            'Site',
+            ['base_path' => JPATH_ROOT . '/components/com_chococsv'],
+            $siteApplication,
+            $siteApplication->getInput()
+        )
             ->execute('deploy');
     }
 
