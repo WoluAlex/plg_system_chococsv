@@ -71,7 +71,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
     private function getComputedLanguage(): Language
     {
-        $container = $this->getContainer() ?? Factory::getContainer();
+        $container = Factory::getContainer();
         // Console uses the default system language
         $config = $container->get('config');
         $locale = $config->get('language');
