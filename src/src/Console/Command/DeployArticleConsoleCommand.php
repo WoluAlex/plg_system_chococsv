@@ -23,7 +23,7 @@ namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
 use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\LanguageFactory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
@@ -75,7 +75,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
     {
         $container = $givenContainer ?? Factory::getContainer();
 
-        return $container->get(LanguageFactory::class)->getText();
+        return $container->get(LanguageFactoryInterface::class)->getText();
     }
 
     /**
