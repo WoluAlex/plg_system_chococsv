@@ -110,13 +110,18 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
     public function deploy()
     {
         /**
+         * @var SiteApplication $siteApplication
+         */
+        $siteApplication = Factory::getContainer()
+            ->get(SiteApplication::class);
+
+        /**
          * @var MVCFactoryInterface $mvcFactory
          */
-        $mvcFactory = Factory::getContainer()
-            ->get(SiteApplication::class)
+        $mvcFactory = $siteApplication
             ->bootComponent('chococsv')->getMVCFactory();
 
-        $mvcFactory->createController('Csv', 'Site')
+        $mvcFactory->createController('Csv', 'Site', [], $siteApplication, $siteApplication->getInput())
             ->execute('deploy');
     }
 
