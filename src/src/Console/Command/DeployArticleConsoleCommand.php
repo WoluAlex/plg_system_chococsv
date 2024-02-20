@@ -23,7 +23,6 @@ namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
 use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\ContainerAwareInterface;
@@ -59,16 +58,6 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
     private SymfonyStyle|null $consoleOutputStyle = null;
 
-    private Language|null $language = null;
-
-    private function getComputedLanguage(): Language
-    {
-        $lang = $this->getApplication()->getLanguage() || Factory::getApplication()->getLanguage();
-        $lang->load('plg_console_chococsv') || $lang->load('com_chococsv');
-
-        return $lang;
-    }
-
     /**
      * Internal function to execute the command.
      *
@@ -84,9 +73,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         try {
             $this->consoleOutputStyle = new SymfonyStyle($input, $output);
 
-            $this->consoleOutputStyle->title(
-                $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_TITLE')
-            );
+            $this->consoleOutputStyle->title('Chococsv: Deploy Joomla articles');
 
             $this->deploy();
         } catch (Throwable $e) {
@@ -115,14 +102,9 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
      */
     protected function configure(): void
     {
-        try {
-            $this->language = $this->getComputedLanguage();
-            $this->setDescription(
-                $this->language->translate('PLG_CONSOLE_CHOCOCSV_DEPLOY_ARTICLE_COMMAND_DESCRIPTION')
-            );
-        } catch (Throwable $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+        $this->setDescription(
+            'Deploy Joomla articles from CSV file to multiple destinations at once using Joomla Web Services'
+        );
     }
 
     public function deploy()
