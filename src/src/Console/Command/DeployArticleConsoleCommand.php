@@ -76,11 +76,15 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
             $this->consoleOutputStyle->title('Chococsv: Deploy Joomla articles');
 
             $this->deploy();
+
+            return Command::SUCCESS;
         } catch (Throwable $e) {
             $this->consoleOutputStyle->error(
                 sprintf(
-                    '%s%d%s%s',
+                    '[%d] %s %s:%d Trace: %s Previous: %s',
+                    $e->getCode,
                     $e->getMessage(),
+                    $e->getFile(),
                     $e->getLine(),
                     $e->getTraceAsString(),
                     $e->getPrevious() ? $e->getPrevious()->getTraceAsString() : ''
@@ -90,7 +94,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
             return Command::FAILURE;
         }
 
-        return Command::SUCCESS;
+        return Command::FAILURE;
     }
 
     /**
