@@ -23,12 +23,12 @@ namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
 use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\ContainerAwareInterface;
 use Joomla\DI\ContainerAwareTrait;
-use Joomla\Language\Language;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,7 +77,10 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         $locale = $config->get('language');
         $debug  = $config->get('debug_lang');
 
-        return $container->get(LanguageFactoryInterface::class)->createLanguage($locale, $debug);
+        $lang = $container->get(LanguageFactoryInterface::class)->createLanguage($locale, $debug);
+        $lang->load('plg_console_chococsv') || $lang->load('com_chococsv');
+
+        return $lang;
     }
 
     /**
