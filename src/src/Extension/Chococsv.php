@@ -14,7 +14,7 @@ namespace AlexApi\Plugin\Console\Chococsv\Extension;
 
 defined('_JEXEC') || die;
 
-use AlexApi\Plugin\Console\Chococsv\Console\Command\DeployArticleCommand;
+use AlexApi\Plugin\Console\Chococsv\Console\Command\DeployArticleConsoleCommand;
 use Exception;
 use Generator;
 use Joomla\Application\ApplicationEvents;
@@ -105,7 +105,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
 
     private function allowedCommands(): Generator
     {
-        yield new DeployArticleCommand();
+        yield new DeployArticleConsoleCommand();
     }
 
 

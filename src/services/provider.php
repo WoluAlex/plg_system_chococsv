@@ -10,9 +10,10 @@ declare(strict_types=1);
  */
 
 use AlexApi\Plugin\Console\Chococsv\Extension\Chococsv;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\ConsoleApplication;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Extension\PluginInterface;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
@@ -24,6 +25,12 @@ return new class implements ServiceProviderInterface {
 
     public function register(Container $container)
     {
+        if (!(ComponentHelper::isInstalled('com_chococsv') && ComponentHelper::isEnabled('com_chococsv'))) {
+            return;
+        }
+
+        $component = $container->get(AdministratorApplication::class)->bootComponent('chococsv');
+
         $container->set(PluginInterface::class, function (Container $container) {
             $dispatcher = $container->get(DispatcherInterface::class);
             $plugin = PluginHelper::getPlugin('console', 'chococsv');

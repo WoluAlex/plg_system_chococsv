@@ -20,12 +20,12 @@
     "ext-simplexml": "*"
   },
   "require-dev": {
-    "symfony/dotenv": "@stable",
-    "phpunit/phpunit": "@stable"
+    "symfony/dotenv": "^7.0",
+    "phpunit/phpunit": "^11.0"
   },
   "autoload": {
     "psr-4": {
-      "AlexApi\\Plugin\\Console\\Chococsv\\":"src/src/"
+      "AlexApi\\Plugin\\Console\\Chococsv\\": "src/src/"
     }
   },
   "autoload-dev": {
