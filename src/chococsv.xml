@@ -7,7 +7,7 @@
 	<authorUrl>https://apiadept.com</authorUrl>
 	<copyright>Copyright (c) 2009 - present. Mr Alexandre J-S William ELISÉ</copyright>
 	<license>AGPL-3.0-or-later</license>
-	<version>0.7.1</version>
+	<version>0.8.0</version>
 	<description>PLG_CONSOLE_CHOCOCSV_XML_DESCRIPTION</description>
 	<namespace path="src">AlexApi\Plugin\Console\Chococsv</namespace>
 
@@ -30,12 +30,4 @@
 		<language tag="fr-FR">fr-FR/plg_console_chococsv.sys.ini</language>
 	</languages>
 
-	<!-- Changelog files -->
-	<changelogurl>https://update.example.org/changelog/?extension=chococsv&amp;prefix=plg_&amp;type=plugin&amp;group=&amp;content&amp;version=0.1.0&amp;format=xml</changelogurl>
-
-	<!-- Update servers -->
-	<updateservers>
-		<server type="extension" name="Chococsv Updates">https://update.example.org/extension/?extension=chococsv&amp;prefix=plg_&amp;type=plugin&amp;group=&amp;content&amp;version=0.1.0&amp;format=xml</server>
-	</updateservers>
-	<dlid prefix="dlid=" suffix="" />
 </extension>
