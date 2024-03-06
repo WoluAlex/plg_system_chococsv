@@ -1,0 +1,19 @@
+parameters:
+  level: max
+  phpVersion: 80200
+
+  bootstrapFiles:
+    - bootstrap.php
+
+  paths:
+    - src
+    - Tests
+
+  excludePaths:
+    analyseAndScan:
+      - vendor/*
+
+  parallel:
+    jobSize: 20
+    maximumNumberOfProcesses: 32
+    minimumNumberOfJobsPerProcess: 2

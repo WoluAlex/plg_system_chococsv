@@ -27,12 +27,14 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\ContainerAwareInterface;
 use Joomla\DI\ContainerAwareTrait;
+use LogicException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
+use function basename;
 use function defined;
 use function sprintf;
 
@@ -61,8 +63,8 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
     /**
      * Internal function to execute the command.
      *
-     * @param   InputInterface   $input   The input to inject into the command.
-     * @param   OutputInterface  $output  The output to inject into the command.
+     * @param InputInterface $input The input to inject into the command.
+     * @param OutputInterface $output The output to inject into the command.
      *
      * @return  int  The command exit code
      *
@@ -70,24 +72,31 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
      */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        try {
-            $this->consoleOutputStyle = new SymfonyStyle($input, $output);
+        $this->consoleOutputStyle = new SymfonyStyle($input, $output);
 
+        try {
             $this->consoleOutputStyle->title('Chococsv: Deploy Joomla articles');
 
             $this->deploy();
 
             return Command::SUCCESS;
+        } catch (LogicException $logicException) {
+            $this->consoleOutputStyle->warning(
+                sprintf(
+                    '[%d] %s',
+                    $logicException->getCode(),
+                    $logicException->getMessage(),
+                )
+            );
+            return Command::SUCCESS;
         } catch (Throwable $e) {
             $this->consoleOutputStyle->error(
                 sprintf(
-                    '[%d] %s %s:%d Trace: %s Previous: %s',
+                    '[%d] %s %s:%d',
                     $e->getCode(),
                     $e->getMessage(),
-                    $e->getFile(),
-                    $e->getLine(),
-                    $e->getTraceAsString(),
-                    $e->getPrevious() ? $e->getPrevious()->getTraceAsString() : ''
+                    basename($e->getFile()),
+                    $e->getLine()
                 )
             );
 
@@ -133,6 +142,16 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
             $siteApplication->getInput()
         )
             ->execute('deploy');
+    }
+
+    public function __debugInfo(): ?array
+    {
+        return null;
+    }
+
+    public function __serialize(): array
+    {
+        return [];
     }
 
 }

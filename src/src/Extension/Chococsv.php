@@ -110,5 +110,13 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         yield $deployArticleConsoleCommand;
     }
 
+    public function __debugInfo(): ?array
+    {
+        return null;
+    }
 
+    public function __serialize(): array
+    {
+        return [];
+    }
 }

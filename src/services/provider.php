@@ -41,4 +41,14 @@ return new class implements ServiceProviderInterface {
             return $extension;
         });
     }
+
+    public function __debugInfo(): ?array
+    {
+        return null;
+    }
+
+    public function __serialize(): array
+    {
+        return [];
+    }
 };
