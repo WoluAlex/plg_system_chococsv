@@ -59,7 +59,6 @@
     "minimal": [
       "@refactor-apply",
       "@docs",
-      "@test",
       "@perf"
     ]
   }
