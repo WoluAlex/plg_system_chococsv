@@ -33,7 +33,7 @@ return new class () implements ServiceProviderInterface {
                  * @var    string
                  * @since  0.1.0
                  */
-                protected $minimumPhp = '8.2.0';
+                protected $minimumPhp = '8.1.0';
 
                 /**
                  * Minimum Joomla version to check
@@ -41,7 +41,7 @@ return new class () implements ServiceProviderInterface {
                  * @var    string
                  * @since  0.1.0
                  */
-                protected $minimumJoomla = '5.0.0';
+                protected $minimumJoomla = '4.0.0';
 
                 private $app;
 
@@ -59,6 +59,11 @@ return new class () implements ServiceProviderInterface {
 
                 public function preflight($type, $parent): bool
                 {
+                    $outcome = parent::preflight($type, $parent);
+                    if (!$outcome) {
+                        return false;
+                    }
+
                     $this->app->enqueueMessage(
                         sprintf(
                             '%s %s version: %s',
