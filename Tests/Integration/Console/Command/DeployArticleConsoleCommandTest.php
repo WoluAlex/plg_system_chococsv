@@ -20,7 +20,6 @@ use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Factory;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\Container;
-use Joomla\CMS\Language\Language;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;

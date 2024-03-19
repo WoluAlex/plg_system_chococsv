@@ -16,8 +16,6 @@ use Joomla\CMS\Version;
 use Joomla\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
 
-use Tests\Helper\DatabaseHelper;
-
 use function define;
 use function defined;
 
@@ -43,7 +41,7 @@ class IntegrationTest extends TestCase
          */
         $container->alias('session', 'session.cli')
             ->alias('JSession', 'session.cli')
-            ->alias(\Joomla\CMS\Session\Session::class, 'session.cli')
+            ->alias(Session::class, 'session.cli')
             ->alias(Session::class, 'session.cli')
             ->alias(SessionInterface::class, 'session.cli');
 

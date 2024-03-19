@@ -57,6 +57,7 @@
       "vendor/bin/rector --config=rector.php --no-ansi"
     ],
     "minimal": [
+      "@refactor-apply",
       "@docs",
       "@test",
       "@perf"

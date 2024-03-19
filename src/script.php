@@ -43,8 +43,6 @@ return new class () implements ServiceProviderInterface {
                  */
                 protected $minimumJoomla = '4.0.0';
 
-                private $app;
-
                 protected $deleteFolders = [
                     '/plugins/console/chococsv/forms',
                     '/plugins/console/chococsv/language',
@@ -52,9 +50,8 @@ return new class () implements ServiceProviderInterface {
                     '/plugins/console/chococsv/src',
                 ];
 
-                public function __construct(AdministratorApplication $app)
+                public function __construct(private readonly AdministratorApplication $app)
                 {
-                    $this->app = $app;
                 }
 
                 public function preflight($type, $parent): bool
@@ -67,7 +64,7 @@ return new class () implements ServiceProviderInterface {
                     $this->app->enqueueMessage(
                         sprintf(
                             '%s %s version: %s',
-                            ucfirst($type),
+                            ucfirst((string) $type),
                             $parent->getManifest()->name,
                             $parent->getManifest()->version
                         )
@@ -85,7 +82,7 @@ return new class () implements ServiceProviderInterface {
                     $this->app->enqueueMessage(
                         sprintf(
                             '%s %s version: %s',
-                            ucfirst($type),
+                            ucfirst((string) $type),
                             $parent->getManifest()->name,
                             $parent->getManifest()->version
                         )

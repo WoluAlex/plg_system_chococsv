@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Tests\Benchmark;
 
-use AlexApi\Console\Routefinder\Command\WebServiceRoutesFindCommand;
 use AlexApi\Plugin\Console\Chococsv\Console\Command\DeployArticleConsoleCommand;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -29,7 +28,7 @@ final class DeployArticleConsoleCommandBench
             $output = new ConsoleOutput(OutputInterface::VERBOSITY_QUIET);
 
             $command->execute($input, $output);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             //NO-OP
         }
     }
