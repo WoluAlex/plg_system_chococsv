@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
 
-use AlexApi\Component\Chococsv\Administrator\Command\DeployContentInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -45,8 +44,7 @@ defined('_JEXEC') || die;
  *
  * @since 0.1.0
  */
-final class DeployArticleConsoleCommand extends AbstractCommand implements ContainerAwareInterface,
-                                                                           DeployContentInterface
+final class DeployArticleConsoleCommand extends AbstractCommand implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -77,7 +75,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         try {
             $this->consoleOutputStyle->title('Chococsv: Deploy Joomla articles');
 
-            $this->deploy();
+            $this->compute();
 
             return Command::SUCCESS;
         } catch (LogicException $logicException) {
@@ -102,8 +100,6 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
             return Command::FAILURE;
         }
-
-        return Command::FAILURE;
     }
 
     /**
@@ -120,7 +116,7 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         );
     }
 
-    public function deploy()
+    private function compute(): void
     {
         /**
          * @var SiteApplication $siteApplication
@@ -132,7 +128,8 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
          * @var MVCFactoryInterface $mvcFactory
          */
         $mvcFactory = $siteApplication
-            ->bootComponent('chococsv')->getMVCFactory();
+            ->bootComponent('chococsv')
+            ->getMVCFactory();
 
         $mvcFactory->createController(
             'Csv',

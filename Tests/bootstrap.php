@@ -21,8 +21,8 @@ ini_set('error_reporting', '-1');
 ini_set('log_errors_max_len', '0');
 ini_set('display_errors', 'On');
 ini_set('display_startup_errors', 'On');
-ini_set('xdebug.mode', 'coverage,develop,debug');
-ini_set('memory_limit', '272M');
+ini_set('xdebug.mode', 'coverage,profile');
+ini_set('memory_limit', '1024M');
 
 // Set fixed precision value to avoid round related issues
 ini_set('precision', 14);
