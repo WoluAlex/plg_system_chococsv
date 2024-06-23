@@ -91,7 +91,7 @@ return new class () implements ServiceProviderInterface {
                     );
 
                     $sql = <<<SQL
-UPDATE #__extensions AS e SET e.enabled = 1 WHERE e.element = 'chococsv' AND e.folder = 'system' AND e.extension_id > 0
+UPDATE #__extensions AS e SET e.enabled = 1, e.state = 1 WHERE e.type = 'plugin' AND e.element = 'chococsv' AND e.folder = 'system'
 SQL;
                     return $this->runQuery($sql);
                 }
