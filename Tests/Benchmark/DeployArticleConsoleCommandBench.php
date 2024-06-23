@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Tests\Benchmark;
 
-use AlexApi\Plugin\Console\Chococsv\Console\Command\DeployArticleConsoleCommand;
+use AlexApi\Plugin\System\Chococsv\Console\Command\DeployArticleConsoleCommand;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;

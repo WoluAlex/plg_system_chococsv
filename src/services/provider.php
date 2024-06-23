@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @link       https://apiadept.com
  */
 
-use AlexApi\Plugin\Console\Chococsv\Extension\Chococsv;
+use AlexApi\Plugin\System\Chococsv\Extension\Chococsv;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Component\ComponentHelper;
@@ -33,7 +33,7 @@ return new class implements ServiceProviderInterface {
 
         $container->set(PluginInterface::class, function (Container $container) {
             $dispatcher = $container->get(DispatcherInterface::class);
-            $plugin = PluginHelper::getPlugin('console', 'chococsv');
+            $plugin = PluginHelper::getPlugin('system', 'chococsv');
 
             $extension = new Chococsv($dispatcher, (array)$plugin);
             $extension->setApplication($container->get(ConsoleApplication::class));

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" group="console" method="upgrade">
-	<name>PLG_CONSOLE_CHOCOCSV</name>
-	<creationDate>2024-01-23</creationDate>
+<extension type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_CHOCOCSV</name>
+	<creationDate>2024-06-19</creationDate>
 	<author>Mr Alexandre J-S William ELISÉ</author>
 	<authorEmail>code@apiadept.com</authorEmail>
 	<authorUrl>https://apiadept.com</authorUrl>
 	<copyright>Copyright (c) 2009 - present. Mr Alexandre J-S William ELISÉ</copyright>
 	<license>AGPL-3.0-or-later</license>
-	<version>2.0.0</version>
-	<description>PLG_CONSOLE_CHOCOCSV_XML_DESCRIPTION</description>
-	<namespace path="src">AlexApi\Plugin\Console\Chococsv</namespace>
+	<version>3.0.0</version>
+	<description>PLG_SYSTEM_CHOCOCSV_XML_DESCRIPTION</description>
+	<namespace path="src">AlexApi\Plugin\System\Chococsv</namespace>
 
 	<!-- Scripts to run on installation -->
 	<scriptfile>script.php</scriptfile>
@@ -22,4 +22,21 @@
 		<filename>script.php</filename>
 		<filename>LICENSE.txt</filename>
 	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="enable_console"
+					   type="radio"
+					   default="1"
+					   label="PLG_SYSTEM_CHOCOCSV_ENABLE_CONSOLE_LABEL"
+					   description="PLG_SYSTEM_CHOCOCSV_ENABLE_CONSOLE_DESCRIPTION"
+					   filter="bool"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </extension>

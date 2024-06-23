@@ -1,8 +1,5 @@
 {
   "config": {
-    "platform": {
-      "php": "8.1.28"
-    },
     "github-protocols": [
       "https"
     ],
@@ -28,7 +25,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "AlexApi\\Plugin\\Console\\Chococsv\\": "src/src/",
+      "AlexApi\\Plugin\\System\\Chococsv\\": "src/src/",
       "Tests\\": "Tests/"
     }
   },

@@ -18,7 +18,7 @@ declare(strict_types=1);
  * @link          https://apiadept.com
  */
 
-namespace AlexApi\Plugin\Console\Chococsv\Console\Command;
+namespace AlexApi\Plugin\System\Chococsv\Console\Command;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;

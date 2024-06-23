@@ -15,7 +15,7 @@ namespace Tests\Integration\Console\Command;
 
 // phpcs:enable PSR1.Files.SideEffects
 
-use AlexApi\Plugin\Console\Chococsv\Console\Command\DeployArticleConsoleCommand;
+use AlexApi\Plugin\System\Chococsv\Console\Command\DeployArticleConsoleCommand;
 use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Factory;
 use Joomla\Console\Command\AbstractCommand;

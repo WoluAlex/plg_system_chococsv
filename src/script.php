@@ -12,8 +12,10 @@ declare(strict_types=1);
  */
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Installer\InstallerScriptInterface;
+use Joomla\Database\DatabaseDriver;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
@@ -44,10 +46,10 @@ return new class () implements ServiceProviderInterface {
                 protected $minimumJoomla = '4.0.0';
 
                 protected $deleteFolders = [
-                    '/plugins/console/chococsv/forms',
-                    '/plugins/console/chococsv/language',
-                    '/plugins/console/chococsv/services',
-                    '/plugins/console/chococsv/src',
+                    '/plugins/system/chococsv/forms',
+                    '/plugins/system/chococsv/language',
+                    '/plugins/system/chococsv/services',
+                    '/plugins/system/chococsv/src',
                 ];
 
                 public function __construct(private readonly AdministratorApplication $app)
@@ -64,7 +66,7 @@ return new class () implements ServiceProviderInterface {
                     $this->app->enqueueMessage(
                         sprintf(
                             '%s %s version: %s',
-                            ucfirst((string) $type),
+                            ucfirst((string)$type),
                             $parent->getManifest()->name,
                             $parent->getManifest()->version
                         )
@@ -82,13 +84,16 @@ return new class () implements ServiceProviderInterface {
                     $this->app->enqueueMessage(
                         sprintf(
                             '%s %s version: %s',
-                            ucfirst((string) $type),
+                            ucfirst((string)$type),
                             $parent->getManifest()->name,
                             $parent->getManifest()->version
                         )
                     );
 
-                    return true;
+                    $sql = <<<SQL
+UPDATE #__extensions AS e SET e.enabled = 1 WHERE e.element = 'chococsv' AND e.folder = 'system' AND e.extension_id > 0
+SQL;
+                    return $this->runQuery($sql);
                 }
 
                 public function install($parent): bool
@@ -131,6 +136,18 @@ return new class () implements ServiceProviderInterface {
                     );
 
                     return true;
+                }
+
+                private function runQuery($query)
+                {
+                    try {
+                        $db = Factory::getContainer()->get(DatabaseDriver::class);
+                        $db->setQuery($query);
+                        return $db->execute();
+                    } catch (Throwable $e) {
+                        $this->app->enqueueMessage($e->getMessage(), 'warning');
+                    }
+                    return false;
                 }
             }
         );
