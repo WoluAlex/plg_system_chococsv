@@ -1,0 +1,23 @@
+{
+  "runner.bootstrap": "bootstrap.php",
+  "runner.path": "./Tests/Benchmark",
+  "runner.file_pattern": "*Bench.php",
+  "runner.executor": "debug",
+  "runner.env_enabled_providers": [
+    "test"
+  ],
+  "report.generators": {
+    "all": {
+      "generator": "composite",
+      "reports": [
+        "default",
+        "aggregate",
+        "env"
+      ]
+    }
+  },
+  "runner.php_disable_ini": true,
+  "runner.revs": 1000,
+  "runner.iterations": 5,
+  "console.ansi": false
+}

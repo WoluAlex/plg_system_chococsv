@@ -1,0 +1,65 @@
+# deptrac.yaml
+deptrac:
+  paths:
+    - ./src/src
+  exclude_files:
+    - '#.*test.*#'
+    - '#.*Test.*#'
+  layers:
+    - name: Infrastructure
+      collectors:
+        - type: className
+          regex: AlexApi\\Plugin\\System\\Chococsv\\Concrete\\.*
+        - type: className
+          regex: AlexApi\\Plugin\\System\\Chococsv\\Console\\.*
+        - type: className
+          regex: AlexApi\\Plugin\\System\\Chococsv\\Extension\\.*
+
+    # missing application layer in this architecture but should be fine for now
+
+    - name: Domain
+      collectors:
+        - type: className
+          regex: AlexApi\\Plugin\\System\\Chococsv\\Library\\Domain\\.*
+
+    - name: Library
+      collectors:
+        - type: className
+          regex: Joomla\\.*
+        - type: className
+          regex: AlexApi\\Plugin\\System\\Chococsv\\Library\\Behaviour\\.*
+        - type: className
+          regex: AlexApi\\Plugin\\System\\Chococsv\\Library\\Command\\.*
+        - type: className
+          regex: Psr\\.*
+        - type: className
+          regex: Symfony\\.*
+        - type: className
+          regex: League\\.*
+
+
+    - name: Internal
+      collectors:
+        - type: php_internal
+          value: .+
+
+  ruleset:
+    Infrastructure: # Can depend on itself and higher layers
+      - Infrastructure
+      - Domain
+      - Library   # Is horizontal component potentially used cross layers
+      - Internal  # Depends on the underlying language which is in this case php
+    Domain:
+      - Domain
+      - Library   # Is horizontal component potentially used cross layers
+      - Internal  # Depends on the underlying language which is in this case php
+    Library:
+        - Library
+        - Domain
+        - Internal
+  formatters:
+    graphviz:
+      pointToGroups: true
+      groups:
+        Domain:
+        Infrastructure:

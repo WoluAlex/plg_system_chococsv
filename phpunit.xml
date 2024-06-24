@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         colors="false">
+    <testsuites>
+        <testsuite name="Project">
+            <directory>Tests</directory>
+        </testsuite>
+    </testsuites>
+    <coverage pathCoverage="true" ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <report>
+            <text outputFile="Tests/coverage/coverage.txt"/>
+        </report>
+    </coverage>
+    <logging>
+        <testdoxText outputFile="Tests/logging/testdox.txt"/>
+    </logging>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>

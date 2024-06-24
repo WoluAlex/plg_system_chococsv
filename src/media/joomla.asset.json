@@ -1,0 +1,41 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "plg_system_chococsv",
+  "version": "3.1.0",
+  "description": "This file contains details of the assets used by Chococsv Component",
+  "license": "AGPL-3.0-or-later",
+  "assets": [
+    {
+      "name": "plg_system_chococsv.chococsv",
+      "type": "style",
+      "uri": "plg_system_chococsv/chococsv.css",
+      "weight": 900,
+      "attributes": {
+        "relative": true,
+        "version": "auto"
+      },
+      "dependencies": [
+        "template.active",
+        "template.active.language"
+      ]
+    },
+    {
+      "name": "plg_system_chococsv.chococsv",
+      "type": "script",
+      "uri": "plg_system_chococsv/chococsv.js",
+      "attributes": {
+        "relative": true,
+        "module": true,
+        "version": "auto"
+      }
+    },
+    {
+      "name": "plg_system_chococsv.chococsv",
+      "type": "preset",
+      "dependencies": [
+        "plg_system_chococsv.chococsv#style",
+        "plg_system_chococsv.chococsv#script"
+      ]
+    }
+  ]
+}
