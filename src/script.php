@@ -106,7 +106,8 @@ return new class () implements ServiceProviderInterface {
                     $sql = <<<EOD
 UPDATE #__extensions AS e SET e.enabled = 1, e.state = 1 WHERE e.type = 'plugin' AND e.element = 'chococsv' AND e.folder = 'system'
 EOD;
-                    return $this->runQuery($sql);
+                    $this->runQuery($sql);
+                    return true;
                 }
 
                 public function update($parent): bool
