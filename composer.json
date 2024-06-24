@@ -17,9 +17,10 @@
     "ext-simplexml": "*"
   },
   "require-dev": {
+    "mikey179/vfsstream": "^1.6",
     "symfony/dotenv": "^6.0",
-    "symfony/var-dumper": "^v6.0",
     "phpunit/phpunit": "^10.0",
+    "qossmic/deptrac-shim": "^1.0",
     "phpbench/phpbench": "^1.2",
     "rector/rector": "^1.0"
   },
@@ -43,9 +44,13 @@
       "@putenv NO_COLOR=1",
       "tools/phpdoc"
     ],
+    "deptrac": [
+      "@putenv NO_COLOR=1",
+      "vendor/bin/deptrac --report-uncovered"
+    ],
     "perf": [
       "@putenv NO_COLOR=1",
-      "php vendor/bin/phpbench run --config=phpbench.json --report=all"
+      "vendor/bin/phpbench run --config=phpbench.json --report=all"
     ],
     "refactor-try": [
       "vendor/bin/rector --dry-run --config=rector.php --no-ansi"

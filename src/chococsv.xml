@@ -7,15 +7,25 @@
 	<authorUrl>https://apiadept.com</authorUrl>
 	<copyright>Copyright (c) 2009 - present. Mr Alexandre J-S William ELISÉ</copyright>
 	<license>AGPL-3.0-or-later</license>
-	<version>3.0.4</version>
+	<version>3.2.0</version>
 	<description>PLG_SYSTEM_CHOCOCSV_XML_DESCRIPTION</description>
 	<namespace path="src">AlexApi\Plugin\System\Chococsv</namespace>
 
 	<!-- Scripts to run on installation -->
 	<scriptfile>script.php</scriptfile>
 
+	<!-- Media files -->
+	<media folder="media" destination="plg_system_chococsv">
+		<folder>css</folder>
+		<folder>data</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<filename>joomla.asset.json</filename>
+	</media>
+
 	<!-- Plugin files -->
 	<files>
+		<folder>forms</folder>
 		<folder>language</folder>
 		<folder>src</folder>
 		<folder plugin="chococsv">services</folder>
@@ -24,6 +34,7 @@
 	</files>
 
 	<config>
+		<inlinehelp button="show"/>
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="enable_console"
@@ -35,6 +46,57 @@
 				>
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
+				</field>
+				<field name="destinations"
+					   type="subform"
+					   label="PLG_SYSTEM_CHOCOCSV_DESTINATIONS_LABEL"
+					   description="PLG_SYSTEM_CHOCOCSV_DESTINATIONS_DESCRIPTION"
+					   formsource="/plugins/system/chococsv/forms/destination.xml"
+					   multiple="true"
+					   min="1"
+					   groupByFieldset="true"
+					   layout="joomla.form.field.subform.repeatable"
+					   icon="list"
+					   required="true"
+				/>
+			</fieldset>
+			<fieldset name="advanced" label="COM_CONFIG_ADVANCED_FIELDSET_LABEL">
+				<field name="extra_features" type="spacer" class="text"
+					   label="PLG_SYSTEM_CHOCOCSV_EXTRA_FEATURES_LABEL"/>
+				<field name="show_ascii_banner"
+					   type="radio"
+					   default="1"
+					   label="PLG_SYSTEM_CHOCOCSV_SHOW_ASCII_BANNER_LABEL"
+					   description="PLG_SYSTEM_CHOCOCSV_SHOW_ASCII_BANNER_DESCRIPTION"
+					   layout="joomla.form.field.radio.switcher"
+					   filter="integer"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="silent_mode"
+					   type="radio"
+					   default="1"
+					   label="PLG_SYSTEM_CHOCOCSV_SILENT_MODE_LABEL"
+					   description="PLG_SYSTEM_CHOCOCSV_SILENT_MODE_DESCRIPTION"
+					   layout="joomla.form.field.radio.buttons"
+					   filter="integer"
+				>
+					<option value="0">PLG_SYSTEM_CHOCOCSV_SILENT_MODE_0_LABEL</option>
+					<option value="1">PLG_SYSTEM_CHOCOCSV_SILENT_MODE_1_LABEL</option>
+					<option value="2">PLG_SYSTEM_CHOCOCSV_SILENT_MODE_2_LABEL</option>
+				</field>
+				<field name="save_report_to_file"
+					   type="radio"
+					   default="1"
+					   label="PLG_SYSTEM_CHOCOCSV_SAVE_REPORT_TO_FILE_LABEL"
+					   description="PLG_SYSTEM_CHOCOCSV_SAVE_REPORT_TO_FILE_DESCRIPTION"
+					   layout="joomla.form.field.radio.buttons"
+					   filter="integer"
+				>
+					<option value="0">PLG_SYSTEM_CHOCOCSV_SAVE_REPORT_TO_FILE_0_LABEL</option>
+					<option value="1">PLG_SYSTEM_CHOCOCSV_SAVE_REPORT_TO_FILE_1_LABEL</option>
+					<option value="2">PLG_SYSTEM_CHOCOCSV_SAVE_REPORT_TO_FILE_2_LABEL</option>
 				</field>
 			</fieldset>
 		</fields>

@@ -14,7 +14,9 @@ namespace AlexApi\Plugin\System\Chococsv\Extension;
 
 defined('_JEXEC') || die;
 
+use AlexApi\Plugin\System\Chococsv\Concrete\DeployArticleCommand;
 use AlexApi\Plugin\System\Chococsv\Console\Command\DeployArticleConsoleCommand;
+use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\State\DeployArticleCommandState;
 use Exception;
 use Generator;
 use Joomla\Application\ApplicationEvents;
@@ -22,8 +24,6 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Helper\LibraryHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Console\Command\AbstractCommand;
@@ -31,7 +31,6 @@ use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 
 use function defined;
-use function file_exists;
 
 /**
  * Chococsv
@@ -69,6 +68,12 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             ];
         }
 
+        if (Factory::getApplication()->isClient('site')) {
+            return [
+                'onAfterRoute' => 'onAfterRoute'
+            ];
+        }
+
         return [];
     }
 
@@ -97,19 +102,27 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             return false;
         }
 
-        if ($form->getName() !== 'com_config.component') {
-            return false;
-        }
-
-        $currentComponent = Factory::getApplication()->getInput()->get('component');
-
-        if ($currentComponent !== 'com_chococsv') {
+        if ($form->getName() !== 'com_plugins.plugin') {
             return false;
         }
 
         $this->loadAssets();
         return true;
     }
+
+
+    public function onAfterRoute()
+    {
+        $jinput = $this->getApplication()->input;
+
+        // Intercepting calls to old Chococsv component implementation
+        if (($jinput->getCmd('option') === 'com_chococsv')
+            && ($jinput->getCmd('task') === 'csv.deploy')
+        ) {
+            $this->deploy();
+        }
+    }
+
 
     private function loadAssets(): void
     {
@@ -130,8 +143,8 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
          */
         $wa = $document->getWebAssetManager();
 
-        $wa->getRegistry()->addExtensionRegistryFile($this->option ?? 'com_chococsv');
-        $wa->usePreset('com_chococsv.chococsv');
+        $wa->getRegistry()->addExtensionRegistryFile('plg_system_chococsv');
+        $wa->usePreset('plg_system_chococsv.chococsv');
     }
 
     /**
@@ -151,24 +164,6 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        if (!LibraryHelper::isEnabled('lib_chococsv')) {
-            Factory::getApplication()->enqueueMessage(
-                Text::_('PLG_SYSTEM_CHOCOCSV_LIBRARY_REQUIRED_DEPENDENCY_NOT_ENABLED'),
-                'warning'
-            );
-            return;
-        }
-
-        if (!file_exists(JPATH_LIBRARIES . '/lib_chococsv/library.php')) {
-            Factory::getApplication()->enqueueMessage(
-                Text::_('PLG_SYSTEM_CHOCOCSV_LIBRARY_REQUIRED_DEPENDENCY_NOT_FOUND'),
-                'warning'
-            );
-            return;
-        }
-
-        require_once JPATH_LIBRARIES . '/lib_chococsv/library.php';
-
         $commands = $this->allowedCommands();
         foreach ($commands as $command) {
             if (!($command instanceof AbstractCommand)) {
@@ -184,6 +179,39 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             Factory::getApplication()->addCommand($command);
         }
     }
+
+    public function deploy(): void
+    {
+        // Wether or not to show ASCII banner true to show , false otherwise. Default is to show the ASCII art banner
+        $givenShowAsciiBanner = (bool)$this->params->get('show_ascii_banner', 0);
+
+// Silent mode
+// 0: hide both response result and key value pairs
+// 1: show response result only
+// 2: show key value pairs only
+// Set to 0 if you want to squeeze out performance of this script to the maximum
+        $givenSilent = (int)$this->params->get('silent_mode', 1);
+
+
+// Do you want a report after processing?
+// 0: no report, 1: success & errors, 2: errors only
+// When using report feature. Silent mode MUST be set to 1. Otherwise you might have unexpected results.
+// Set to 0 if you want to squeeze out performance of this script to the maximum
+// If enabled, this will create logs using native Joomla Logger
+        $givenSaveReportToFile = (int)$this->params->get('save_report_to_file', 1);
+
+        $givenDestinations = (array)$this->params->get('destinations', []);
+
+        $deployArticleCommandState = DeployArticleCommandState::fromState(
+            $givenDestinations,
+            $givenSilent,
+            $givenSaveReportToFile
+        );
+        $deployArticleCommandState->withAsciiBanner($givenShowAsciiBanner);
+        $command = DeployArticleCommand::fromState($deployArticleCommandState);
+        $command->deploy();
+    }
+
 
     private function allowedCommands(): Generator
     {

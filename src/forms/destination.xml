@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form name="destination" class="chococsv__destination--form">
+    <fieldset name="destination" class="chococsv__destination--fieldset">
+        <fields name="ref" class="chococsv__destination--ref">
+            <field name="tokenindex"
+                   type="text"
+                   label="PLG_SYSTEM_CHOCOCSV_TOKEN_INDEX_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_TOKEN_INDEX_DESCRIPTION"
+                   pattern="[a-zA-Z]{1,20}\-?[a-zA-Z0-9]{1,19}"
+                   hint="Ex: app-001,web42,Site123,APP,WEB123,SITE-123"
+                   size="50"
+                   maxlength="40"
+                   required="true"
+                   class="chococsv__destination--tokenindex"
+            />
+            <field name="is_active"
+                   type="radio"
+                   label="PLG_SYSTEM_CHOCOCSV_IS_ACTIVE_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_IS_ACTIVE_DESCRIPTION"
+                   layout="joomla.form.field.radio.switcher"
+                   default="1"
+                   filter="integer"
+                   class="chococsv__destination--isactive"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="base_url"
+                   type="url"
+                   default="https://example.org"
+                   label="PLG_SYSTEM_CHOCOCSV_BASE_URL_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_BASE_URL_DESCRIPTION"
+                   scheme="http,https"
+                   size="100"
+                   maxlength="100"
+                   validate="url"
+                   required="true"
+                   icon="globe"
+                   class="chococsv__destination--baseurl"
+                   showon="is_active:1"
+            />
+            <field name="base_path"
+                   type="url"
+                   default="/api/index.php/v1"
+                   label="PLG_SYSTEM_CHOCOCSV_BASE_PATH_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_BASE_PATH_DESCRIPTION"
+                   relative="true"
+                   size="100"
+                   maxlength="50"
+                   validate="url"
+                   required="true"
+                   class="chococsv__destination--basepath"
+                   showon="is_active:1"
+            />
+            <field name="auth_apikey"
+                   type="text"
+                   default=""
+                   label="PLG_SYSTEM_CHOCOCSV_AUTH_API_KEY_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_AUTH_API_KEY_DESCRIPTION"
+                   size="100"
+                   filter="raw"
+                   required="true"
+                   class="chococsv__destination--apikey"
+                   showon="is_active:1"
+            />
+            <field name="is_local"
+                   type="radio"
+                   default="1"
+                   label="PLG_SYSTEM_CHOCOCSV_IS_LOCAL_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_IS_LOCAL_DESCRIPTION"
+                   layout="joomla.form.field.radio.switcher"
+                   filter="integer"
+                   required="true"
+                   class="chococsv__destination--islocal"
+                   showon="is_active:1"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="local_file"
+                   type="filelist"
+                   default="sample-data.csv"
+                   label="PLG_SYSTEM_CHOCOCSV_LOCAL_FILE_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_LOCAL_FILE_DESCRIPTION"
+                   directory="media/com_chococsv/data"
+                   filter="([a-zA-Z\-\_]{1,50})\.csv"
+                   exclude="(.+)\.(html|php|exe|py|js|java)"
+                   icon="file"
+                   class="chococsv__destination--localfile"
+                   showon="is_active:1[AND]is_local:1"
+            />
+            <field name="remote_file"
+                   type="url"
+                   label="PLG_SYSTEM_CHOCOCSV_REMOTE_FILE_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_REMOTE_FILE_DESCRIPTION"
+                   scheme="http,https"
+                   relative="false"
+                   hint="https://example.org/sample-data.csv"
+                   default=""
+                   maxlength="400"
+                   icon="globe"
+                   class="chococsv__destination--remotefile"
+                   showon="is_active:1[AND]is_local:0"
+            />
+            <field
+                    name="what_line_numbers_you_want"
+                    type="text"
+                    label="PLG_SYSTEM_CHOCOCSV_WHAT_LINE_NUMBERS_YOU_WANT_LABEL"
+                    description="PLG_SYSTEM_CHOCOCSV_WHAT_LINE_NUMBERS_YOU_WANT_DESCRIPTION"
+                    hint="9,7-7,2-4,10,17-14,21"
+                    size="100"
+                    default=""
+                    icon="printer"
+                    class="chococsv__destination--linesyouwant"
+                    showon="is_active:1"
+            />
+            <field
+                    name="extra_default_fields"
+                    type="list"
+                    label="PLG_SYSTEM_CHOCOCSV_EXTRA_DEFAULT_FIELDS_LABEL"
+                    description="PLG_SYSTEM_CHOCOCSV_EXTRA_DEFAULT_FIELDS_DESCRIPTION"
+                    hint="publish_up,publish_down,featured,featured_up,featured_down,images,urls"
+                    multiple="true"
+                    required="false"
+                    default="publish_up,publish_down,featured,featured_up,featured_down,images,urls"
+                    class="chococsv__destination--extradf"
+                    showon="is_active:1"
+            >
+                <option value="">PLG_SYSTEM_CHOCOCSV_CHOOSE_AN_OPTION_LABEL</option>
+                <option value="publish_up">publish_up</option>
+                <option value="publish_down">publish_down</option>
+                <option value="featured">featured</option>
+                <option value="featured_up">featured_up</option>
+                <option value="featured_down">featured_down</option>
+                <option value="images">images</option>
+                <option value="urls">urls</option>
+            </field>
+            <field name="toggle_custom_fields"
+                   type="radio"
+                   label="PLG_SYSTEM_CHOCOCSV_TOGGLE_CUSTOM_FIELDS_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_TOGGLE_CUSTOM_FIELDS_DESCRIPTION"
+                   layout="joomla.form.field.radio.switcher"
+                   filter="integer"
+                   default="0"
+                   class="chococsv__destination--togglecf"
+                   showon="is_active:1"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field
+                    name="custom_fields"
+                    type="sql"
+                    label="PLG_SYSTEM_CHOCOCSV_CHOOSE_CUSTOM_FIELDS_LABEL"
+                    description="PLG_SYSTEM_CHOCOCSV_CHOOSE_CUSTOM_FIELDS_DESCRIPTION"
+                    query="SELECT f.name, CONCAT(f.title,' (',f.name,')') AS f_title FROM #__fields AS f WHERE f.context = 'com_content.article' AND f.state = 1"
+                    key_field="name"
+                    value_field="f_title"
+                    multiple="true"
+                    required="false"
+                    header="PLG_SYSTEM_CHOCOCSV_CHOOSE_AN_OPTION_LABEL"
+                    class="chococsv__destination--customfields"
+                    default=""
+                    showon="is_active:1[AND]toggle_custom_fields:0"
+            />
+            <field name="manually_custom_fields"
+                   type="text"
+                   label="PLG_SYSTEM_CHOCOCSV_CHOOSE_MANUALLY_CUSTOM_FIELDS_LABEL"
+                   description="PLG_SYSTEM_CHOCOCSV_CHOOSE_MANUALLY_CUSTOM_FIELDS_DESCRIPTION"
+                   default=""
+                   class="chococsv__destination--manuallycf"
+                   showon="is_active:1[AND]toggle_custom_fields:1"
+            />
+        </fields>
+    </fieldset>
+</form>

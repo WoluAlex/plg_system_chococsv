@@ -20,11 +20,8 @@ declare(strict_types=1);
 
 namespace AlexApi\Plugin\System\Chococsv\Console\Command;
 
-use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\DI\ContainerAwareInterface;
 use Joomla\DI\ContainerAwareTrait;
@@ -120,11 +117,6 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
     private function compute(): void
     {
-        if (!(ComponentHelper::isInstalled('com_chococsv') && ComponentHelper::isEnabled('com_chococsv'))) {
-            return;
-        }
-
-        $component = Factory::getContainer()->get(AdministratorApplication::class)->bootComponent('chococsv');
 
         /**
          * @var SiteApplication $siteApplication
@@ -132,21 +124,10 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
         $siteApplication = Factory::getContainer()
             ->get(SiteApplication::class);
 
-        /**
-         * @var MVCFactoryInterface $mvcFactory
-         */
-        $mvcFactory = $siteApplication
-            ->bootComponent('chococsv')
-            ->getMVCFactory();
+        $pluginSystemChococsv = $siteApplication
+            ->bootPlugin('chococsv', 'system');
 
-        $mvcFactory->createController(
-            'Csv',
-            'Site',
-            ['base_path' => JPATH_ROOT . '/components/com_chococsv'],
-            $siteApplication,
-            $siteApplication->getInput()
-        )
-            ->execute('deploy');
+        $pluginSystemChococsv->deploy();
     }
 
     public function __debugInfo(): ?array

@@ -15,7 +15,7 @@
 		<api format="php">
 			<source dsn=".">
 				<!--1 or more repetitions:-->
-				<path>src</path>
+				<path>src/src</path>
 			</source>
 			<!--Optional:-->
 			<output>docs/api</output>
@@ -23,6 +23,7 @@
 			<ignore hidden="true" symlinks="true">
 				<!--1 or more repetitions:-->
 				<path>tests/**</path>
+				<path>Tests/**</path>
 				<path>vendor/**</path>
 			</ignore>
 			<!--Optional:-->
@@ -32,8 +33,6 @@
 			</extensions>
 			<!--Optional:-->
 			<visibility>public</visibility>
-			<!--Optional:-->
-			<default-package-name>Project</default-package-name>
 			<!--Optional:-->
 			<include-source>true</include-source>
 			<!--Optional:-->

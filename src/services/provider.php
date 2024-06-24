@@ -10,9 +10,7 @@ declare(strict_types=1);
  */
 
 use AlexApi\Plugin\System\Chococsv\Extension\Chococsv;
-use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\ConsoleApplication;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
