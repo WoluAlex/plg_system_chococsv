@@ -89,11 +89,7 @@ return new class () implements ServiceProviderInterface {
                             $parent->getManifest()->version
                         )
                     );
-
-                    $sql = <<<SQL
-UPDATE #__extensions AS e SET e.enabled = 1, e.state = 1 WHERE e.type = 'plugin' AND e.element = 'chococsv' AND e.folder = 'system'
-SQL;
-                    return $this->runQuery($sql);
+                    return true;
                 }
 
                 public function install($parent): bool
@@ -107,7 +103,10 @@ SQL;
                         )
                     );
 
-                    return true;
+                    $sql = <<<EOD
+UPDATE #__extensions AS e SET e.enabled = 1, e.state = 1 WHERE e.type = 'plugin' AND e.element = 'chococsv' AND e.folder = 'system'
+EOD;
+                    return $this->runQuery($sql);
                 }
 
                 public function update($parent): bool
@@ -146,8 +145,8 @@ SQL;
                         return $db->execute();
                     } catch (Throwable $e) {
                         $this->app->enqueueMessage($e->getMessage(), 'warning');
+                        return false;
                     }
-                    return false;
                 }
             }
         );
