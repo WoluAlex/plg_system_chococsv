@@ -25,12 +25,6 @@ return new class implements ServiceProviderInterface {
 
     public function register(Container $container)
     {
-        if (!(ComponentHelper::isInstalled('com_chococsv') && ComponentHelper::isEnabled('com_chococsv'))) {
-            return;
-        }
-
-        $component = $container->get(AdministratorApplication::class)->bootComponent('chococsv');
-
         $container->set(PluginInterface::class, function (Container $container) {
             $dispatcher = $container->get(DispatcherInterface::class);
             $plugin = PluginHelper::getPlugin('system', 'chococsv');
