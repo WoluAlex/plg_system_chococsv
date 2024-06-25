@@ -8,13 +8,14 @@
 
 namespace Tests\Integration\Concrete;
 
-use AlexApi\Plugin\System\Chococsv\Concrete\DeployArticleCommand;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\Destination\BasePath;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\Destination\BaseUrl;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\Destination\Destination;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\State\DeployArticleCommandState;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Util\CsvUtil;
+use InvalidArgumentException;
 use Tests\Integration\IntegrationTestCase;
+use Tests\Integration\SampleDeployArticleCommand;
 
 use function array_intersect;
 use function count;
@@ -113,7 +114,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
             $givenSaveReportToFile
         );
         $this->deployArticleCommandState = $this->deployArticleCommandState->withAsciiBanner($givenShowAsciiBanner);
-        $this->deployArticleCommand = DeployArticleCommand::fromState($this->deployArticleCommandState);
+        $this->deployArticleCommand = SampleDeployArticleCommand::fromState($this->deployArticleCommandState);
     }
 
     protected function tearDown(): void
@@ -163,21 +164,21 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $actual = $typedDestinations[0];
 
         // Then
-        self::assertSame(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', $actual->getCsvUrl()->asString());
+        self::assertSame(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', $actual->getCsvUrl()->asString());
     }
 
 
     public function testTestEndpointWithEmptyValues()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         //Given
         $givenBaseUrl = BaseUrl::fromString('');
         $givenBasePath = BasePath::fromString('');
         $givenResourceId = '';
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
-        $expected = '';
-        self::assertSame($expected, $actual);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
     }
 
     public function testTestEndpointShouldBeValidWhenUsingHttpSchemeForBaseUrl()
@@ -188,7 +189,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = 0;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'http://example.org/api/index.php/v1/content/articles';
@@ -204,7 +205,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = 0;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/v1/content/articles';
@@ -221,7 +222,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = 0;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles';
@@ -237,7 +238,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = null;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles';
@@ -253,7 +254,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = '';
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles';
@@ -269,7 +270,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = 42;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles/42';
@@ -285,7 +286,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
         $givenResourceId = 'hello';
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles/hello';
@@ -298,7 +299,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
     {
         // Given: sample csv file with 42 lines
         // And we want all the lines
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('');
         $typedDestinations = $this->deployArticleCommand->testComputeDestinationsTypedArray(
             $this->deployArticleCommandState
@@ -324,7 +325,7 @@ final class DeployArticleCommandTest extends IntegrationTestCase
     {
         // Given: sample csv file with 42 lines
         // And we want all the lines
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('');
         $typedDestinations = $this->deployArticleCommand->testComputeDestinationsTypedArray(
             $this->deployArticleCommandState

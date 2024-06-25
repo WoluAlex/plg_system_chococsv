@@ -26,6 +26,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\Filesystem\Path;
 use Joomla\Http\TransportInterface;
@@ -180,11 +181,11 @@ trait DeployArticleCommandBehaviour
      */
     protected function isSupported(): bool
     {
-        return ComponentHelper::isInstalled('com_chococsv') && ComponentHelper::isEnabled('com_chococsv');
+        return PluginHelper::isEnabled('system','chococsv');
     }
 
     /**
-     * @return array<Destination>
+     * @return array<Destination>|array
      */
     protected function computeDestinationsTypedArray(
         DeployArticleCommandState $givenDeployArticleState
@@ -224,12 +225,12 @@ trait DeployArticleCommandBehaviour
                 $computedLocalCsvFileFromParams = '';
                 if (defined('PROJECT_TEST') && is_dir((string)PROJECT_TEST)) {
                     $computedLocalCsvFileFromParams = Path::check(
-                        sprintf('%s%s/com_chococsv/data/%s', (string)PROJECT_TEST, 'media', $localCsvFileFromParams),
+                        sprintf('%s%s/plg_system_chococsv/data/%s', (string)PROJECT_TEST, 'media', $localCsvFileFromParams),
                         PROJECT_TEST
                     );
                 } elseif (defined('JPATH_ROOT') && is_dir((string)JPATH_ROOT)) {
                     $computedLocalCsvFileFromParams = Path::check(
-                        sprintf('%s%s%s', (string)JPATH_ROOT, '/media/com_chococsv/data/', $localCsvFileFromParams),
+                        sprintf('%s%s%s', (string)JPATH_ROOT, '/media/plg_system_chococsv/data/', $localCsvFileFromParams),
                         JPATH_ROOT
                     );
                 }

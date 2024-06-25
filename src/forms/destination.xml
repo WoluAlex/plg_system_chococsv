@@ -83,7 +83,7 @@
                    default="sample-data.csv"
                    label="PLG_SYSTEM_CHOCOCSV_LOCAL_FILE_LABEL"
                    description="PLG_SYSTEM_CHOCOCSV_LOCAL_FILE_DESCRIPTION"
-                   directory="media/com_chococsv/data"
+                   directory="media/plg_system_chococsv/data"
                    filter="([a-zA-Z\-\_]{1,50})\.csv"
                    exclude="(.+)\.(html|php|exe|py|js|java)"
                    icon="file"

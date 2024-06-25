@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * @package        Joomla.UnitTest
  *
@@ -21,8 +20,6 @@ use Joomla\Session\Session;
 use Joomla\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
 use Tests\Helper\DatabaseHelper;
-
-require_once __DIR__ . '/bootstrap.php';
 
 /**
  * Base Integration Test case for common behaviour across unit tests
@@ -70,7 +67,11 @@ abstract class IntegrationTestCase extends TestCase
 
         $this->app = $app;
 
-        $this->plugin = $container->buildSharedObject(Chococsv::class);
+        $provider = require PROJECT_ROOT . '/src/services/provider.php';
+
+        $container->registerServiceProvider($provider);
+
+        $this->plugin = $this->app->bootPlugin('chococsv', 'system');
     }
 
 

@@ -116,7 +116,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         $jinput = $this->getApplication()->input;
 
         // Intercepting calls to old Chococsv component implementation
-        if (($jinput->getCmd('option') === 'com_chococsv')
+        if (($jinput->getCmd('option') === 'plg_system_chococsv')
             && ($jinput->getCmd('task') === 'csv.deploy')
         ) {
             $this->deploy();
