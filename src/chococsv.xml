@@ -7,7 +7,7 @@
 	<authorUrl>https://apiadept.com</authorUrl>
 	<copyright>Copyright (c) 2009 - present. Mr Alexandre J-S William ELISÉ</copyright>
 	<license>AGPL-3.0-or-later</license>
-	<version>0.3.0</version>
+	<version>0.4.0</version>
 	<description>PLG_SYSTEM_CHOCOCSV_XML_DESCRIPTION</description>
 	<namespace path="src">AlexApi\Plugin\System\Chococsv</namespace>
 
@@ -47,8 +47,8 @@
 					   layout="joomla.form.field.radio.switcher"
 					   class="switcher"
 				>
-					<option value="1">JYES</option>
 					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="destinations"
 					   type="subform"
