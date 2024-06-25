@@ -43,13 +43,6 @@ return new class () implements ServiceProviderInterface {
                  */
                 protected $minimumJoomla = '4.0.0';
 
-                protected $deleteFolders = [
-                    '/plugins/system/chococsv/forms',
-                    '/plugins/system/chococsv/language',
-                    '/plugins/system/chococsv/services',
-                    '/plugins/system/chococsv/src',
-                ];
-
                 public function __construct(private readonly AdministratorApplication $app)
                 {
                 }
