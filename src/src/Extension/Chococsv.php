@@ -82,16 +82,10 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         parent::__construct($subject, $config);
 
         // Make sure we are in CLI application before going further
-        if (!Factory::getApplication()->isClient('cli')) {
-            Factory::getApplication()->enqueueMessage(
-                'This does not seem to be a CLI Application. Cannot continue.',
-                'warning'
-            );
-
-            return;
+        if (Factory::getApplication()->isClient('cli')) {
+            $this->registerCLICommands();
         }
 
-        $this->registerCLICommands();
     }
 
     public function handleChococsvConfigForm(Event $event): bool

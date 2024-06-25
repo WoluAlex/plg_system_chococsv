@@ -11,7 +11,6 @@ declare(strict_types=1);
  */
 
 use AlexApi\Plugin\System\Chococsv\Extension\Chococsv;
-use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -38,29 +37,58 @@ return new class implements ServiceProviderInterface {
 
     public function register(Container $container)
     {
-        $autoloader = Path::check(JPATH_PLUGINS . '/system/chococsv/vendor/autoload.php', JPATH_PLUGINS);
+        $computedAutoloaderFilename = Path::check(
+            JPATH_PLUGINS . '/system/chococsv/vendor/autoload.php',
+            JPATH_PLUGINS
+        );
+
         if (defined('PROJECT_TEST') && defined('PROJECT_ROOT')) {
-            $autoloader = Path::check(
+            $computedAutoloaderFilename = Path::check(
                 PROJECT_ROOT . '/src/vendor/autoload.php',
                 PROJECT_ROOT
             ); //useful ONLY when testing
         }
-        if (!file_exists($autoloader)) {
+        if (!file_exists($computedAutoloaderFilename)) {
             Factory::getApplication()->enqueueMessage(
-                sprintf('File not found %s is required to continue. Stopping here.', $autoloader),
+                sprintf('File not found %s is required to continue. Stopping here.', $computedAutoloaderFilename),
                 'warning'
             );
             return;
         }
 
-        require_once $autoloader;
-
-        $container->set(PluginInterface::class, function (Container $container) {
+        $container->set(PluginInterface::class, function (Container $container) use ($computedAutoloaderFilename) {
             $dispatcher = $container->get(DispatcherInterface::class);
             $plugin = PluginHelper::getPlugin('system', 'chococsv');
 
-            $extension = new Chococsv($dispatcher, (array)$plugin);
-            $extension->setApplication($container->get(ConsoleApplication::class));
+
+            // Import the library loader if necessary.
+            if (!class_exists('JLoader')) {
+                require_once JPATH_PLATFORM . '/loader.php';
+
+                // If JLoader still does not exist panic.
+                if (!class_exists('JLoader')) {
+                    throw new RuntimeException('Joomla Platform not loaded.');
+                }
+            }
+
+// Setup the autoloaders.
+            JLoader::setup();
+
+// Create the Composer autoloader
+            /** @var \Composer\Autoload\ClassLoader $loader */
+            $loader = require $computedAutoloaderFilename;
+
+// We need to pull our decorated class loader into memory before unregistering Composer's loader
+            class_exists('\\Joomla\\CMS\\Autoload\\ClassLoader');
+
+            $loader->unregister();
+
+// Decorate Composer autoloader
+            spl_autoload_register([new \Joomla\CMS\Autoload\ClassLoader($loader), 'loadClass'], true, true);
+
+
+            $extension = (new Chococsv($dispatcher, (array)$plugin));
+            $extension->setApplication(Factory::getApplication());
 
             return $extension;
         });
