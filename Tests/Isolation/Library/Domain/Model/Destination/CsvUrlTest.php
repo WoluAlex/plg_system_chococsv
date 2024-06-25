@@ -25,7 +25,7 @@ final class CsvUrlTest extends IsolationTestCase
     {
         parent::setUp();
         $this->vfsStream = vfsStream::setup('media', '2770', [
-            'com_chococsv' => [
+            'plg_system_chococsv' => [
                 'data' => [
                     'sample-data.csv' => <<<'EOD'
 id,tokenindex,access,title,alias,catid,articletext,introtext,fulltext,language,metadesc,metakey,state,featured,article-subform-field,images,urls
@@ -48,7 +48,7 @@ EOD,
 
     public function testFromStringFromRemoteUrl()
     {
-        $value = 'https://example.org/media/com_chococsv/data/sample-data.csv';
+        $value = 'https://example.org/media/plg_system_chococsv/data/sample-data.csv';
 
         $expected = CsvUrl::class;
         $actual = CsvUrl::fromString($value);

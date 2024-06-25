@@ -1,5 +1,6 @@
 {
   "config": {
+    "vendor-dir": "src/vendor/",
     "github-protocols": [
       "https"
     ],
@@ -8,60 +9,24 @@
     "sort-packages": true
   },
   "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "AlexApi\\Plugin\\System\\Chococsv\\": "src/src/"
+    }
+  },
   "require": {
     "php": "^8.1",
     "ext-curl": "*",
     "ext-gd": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
-    "ext-simplexml": "*"
-  },
-  "require-dev": {
-    "mikey179/vfsstream": "^1.6",
-    "symfony/dotenv": "^6.0",
-    "phpunit/phpunit": "^10.0",
-    "qossmic/deptrac-shim": "^1.0",
-    "phpbench/phpbench": "^1.2",
-    "rector/rector": "^1.0"
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "AlexApi\\Plugin\\System\\Chococsv\\": "src/src/",
-      "Tests\\": "Tests/"
-    }
+    "ext-simplexml": "*",
+    "league/csv": "^9.9"
   },
   "scripts": {
     "gen": [
-      "@minimal",
       "@build"
     ],
-    "build": "export current_hash=\"$(git log HEAD -n 1 --pretty=format:\"%H\")\" && { mkdir -p ./build && cd ./src [ ! -f \"$(dirname $PWD)/build/$(basename $(dirname $PWD))_${current_hash}.zip\" ] && zip -9 -r $(dirname $PWD)/build/$(basename $(dirname $PWD))_${current_hash}.zip . && cd .. ; }",
-    "test": [
-      "@putenv NO_COLOR=1",
-      "vendor/bin/phpunit --testdox --colors=never"
-    ],
-    "docs": [
-      "@putenv NO_COLOR=1",
-      "tools/phpdoc"
-    ],
-    "deptrac": [
-      "@putenv NO_COLOR=1",
-      "vendor/bin/deptrac --report-uncovered"
-    ],
-    "perf": [
-      "@putenv NO_COLOR=1",
-      "vendor/bin/phpbench run --config=phpbench.json --report=all"
-    ],
-    "refactor-try": [
-      "vendor/bin/rector --dry-run --config=rector.php --no-ansi"
-    ],
-    "refactor-apply": [
-      "vendor/bin/rector --config=rector.php --no-ansi"
-    ],
-    "minimal": [
-      "@refactor-apply",
-      "@docs",
-      "@perf"
-    ]
+    "build": "export current_hash=\"$(git log HEAD -n 1 --pretty=format:\"%H\")\" && { mkdir -p ./build && cd ./src [ ! -f \"$(dirname $PWD)/build/$(basename $(dirname $PWD))_${current_hash}.zip\" ] && zip -9 -r $(dirname $PWD)/build/$(basename $(dirname $PWD))_${current_hash}.zip . && cd .. ; }"
   }
 }

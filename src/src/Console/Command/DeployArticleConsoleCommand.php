@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace AlexApi\Plugin\System\Chococsv\Console\Command;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Console\Command\AbstractCommand;
@@ -117,14 +118,10 @@ final class DeployArticleConsoleCommand extends AbstractCommand implements Conta
 
     private function compute(): void
     {
+        $adminApplication = Factory::getContainer()
+            ->get(AdministratorApplication::class);
 
-        /**
-         * @var SiteApplication $siteApplication
-         */
-        $siteApplication = Factory::getContainer()
-            ->get(SiteApplication::class);
-
-        $pluginSystemChococsv = $siteApplication
+        $pluginSystemChococsv = $adminApplication
             ->bootPlugin('chococsv', 'system');
 
         $pluginSystemChococsv->deploy();

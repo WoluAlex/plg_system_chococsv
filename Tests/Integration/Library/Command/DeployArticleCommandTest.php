@@ -6,7 +6,7 @@
  * @license       GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later). See LICENSE.txt file
  */
 
-namespace Tests\Integration\Library\Chococsv\Command;
+namespace Tests\Integration\Library\Command;
 
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\Destination\BasePath;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\Destination\BaseUrl;
@@ -14,7 +14,8 @@ use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\Destination\Destination;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Model\State\DeployArticleCommandState;
 use AlexApi\Plugin\System\Chococsv\Library\Domain\Util\CsvUtil;
 use InvalidArgumentException;
-use Tests\Integration\Library\Chococsv\AdministratorIntegrationTestCase;
+use Tests\Integration\SampleDeployArticleCommand;
+use Tests\Integration\IntegrationTestCase;
 
 use function array_intersect;
 use function count;
@@ -26,7 +27,7 @@ use const API_CONFIG_INI;
 use const PROJECT_TEST;
 
 
-final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
+final class DeployArticleCommandTest extends IntegrationTestCase
 {
     private $deployArticleCommandState;
 
@@ -113,7 +114,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
             $givenSaveReportToFile
         );
         $this->deployArticleCommandState = $this->deployArticleCommandState->withAsciiBanner($givenShowAsciiBanner);
-        $this->deployArticleCommand = DeployArticleCommand::fromState($this->deployArticleCommandState);
+        $this->deployArticleCommand = SampleDeployArticleCommand::fromState($this->deployArticleCommandState);
     }
 
     protected function tearDown(): void
@@ -130,11 +131,8 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
             $this->deployArticleCommandState
         );
 
-        // When
-        $actual = $typedDestinations[0];
-
-        // Then
-        self::assertInstanceOf(Destination::class, $actual);
+        self::assertInstanceOf(Destination::class, $typedDestinations[0]);
+        self::assertInstanceOf(Destination::class, $typedDestinations[1]);
     }
 
 
@@ -163,7 +161,10 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $actual = $typedDestinations[0];
 
         // Then
-        self::assertSame(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', $actual->getCsvUrl()?->asString());
+        self::assertSame(
+            PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv',
+            $actual->getCsvUrl()?->asString()
+        );
     }
 
 
@@ -177,7 +178,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = '';
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
         $expected = '';
     }
 
@@ -189,7 +190,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = 0;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'http://example.org/api/index.php/v1/content/articles';
@@ -205,7 +206,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = 0;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/v1/content/articles';
@@ -222,7 +223,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = 0;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles';
@@ -238,7 +239,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = null;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles';
@@ -254,7 +255,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = '';
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles';
@@ -270,7 +271,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = 42;
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles/42';
@@ -286,7 +287,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
         $givenResourceId = 'hello';
 
         //When
-        $actual = DeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
+        $actual = SampleDeployArticleCommand::testEndpoint($givenBaseUrl, $givenBasePath, $givenResourceId);
 
         //Then
         $expected = 'https://example.org/api/index.php/v1/content/articles/hello';
@@ -299,7 +300,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
     {
         // Given: sample csv file with 42 lines
         // And we want all the lines
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('');
         $typedDestinations = $this->deployArticleCommand->testComputeDestinationsTypedArray(
             $this->deployArticleCommandState
@@ -325,7 +326,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
     {
         // Given: sample csv file with 42 lines
         // And we want all the lines
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('');
         $typedDestinations = $this->deployArticleCommand->testComputeDestinationsTypedArray(
             $this->deployArticleCommandState
@@ -350,7 +351,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
 
     public function testCSVReaderWithJ44xDestination()
     {
-        $this->expectOutputRegex('/Deploy/gmi');
+        $this->expectOutputRegex('/Deploy/mi');
 
         $typedDestinations = $this->deployArticleCommand->testComputeDestinationsTypedArray(
             $this->deployArticleCommandState
@@ -367,7 +368,7 @@ final class DeployArticleCommandTest extends AdministratorIntegrationTestCase
 
     public function testCSVReaderWithJ51xDestination()
     {
-        $this->expectOutputRegex('/Deploy/gmi');
+        $this->expectOutputRegex('/Deploy/mi');
 
         $typedDestinations = $this->deployArticleCommand->testComputeDestinationsTypedArray(
             $this->deployArticleCommandState

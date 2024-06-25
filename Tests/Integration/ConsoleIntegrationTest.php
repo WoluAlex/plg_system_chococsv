@@ -23,7 +23,7 @@ use function defined;
 defined('JVERSION') or define('JVERSION', (new Version())->getShortVersion());
 
 
-class IntegrationTest extends TestCase
+class ConsoleIntegrationTest extends TestCase
 {
     protected function setUp(): void
     {

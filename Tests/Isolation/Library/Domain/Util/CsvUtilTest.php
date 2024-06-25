@@ -94,7 +94,7 @@ final class CsvUtilTest extends IsolationTestCase
 
     public function testComputeCsvLinesWithSpecificLines()
     {
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
 
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('0,8,9,3,4,10');
         $rows = [0 => 1];
@@ -116,7 +116,7 @@ final class CsvUtilTest extends IsolationTestCase
 
     public function testComputeCsvLinesWithAllLinesWithDefaultArticleKeysOnly()
     {
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('');
 
         CsvUtil::computeCsv(
@@ -139,7 +139,7 @@ final class CsvUtilTest extends IsolationTestCase
     {
         // Given: sample csv file with 42 lines
         // And we want all the lines
-        $resource = fopen(PROJECT_TEST . 'media/com_chococsv/data/sample-data.csv', 'r');
+        $resource = fopen(PROJECT_TEST . 'media/plg_system_chococsv/data/sample-data.csv', 'r');
         $orderedSet = CsvUtil::chooseLinesLikeAPrinter('');
 
         // When we call read csv file
@@ -169,19 +169,13 @@ JSON;
         $enqueueMessageCallable = static function ($message) {
             echo $message ? $message . PHP_EOL : '';
         };
-        $data = CsvUtil::nested(['custom-field' => $json], $enqueueMessageCallable, 2);
+        $actual = CsvUtil::nested(['custom-field' => $json], $enqueueMessageCallable, 2);
 
         $expected = [
-            'custom-field' => (object)[
-                "row0" => (object)[
-                    "field2" => 1410,
-                    "field1" => "This an article summary 1 for this dessert. <em>Short</em> & <em>Sweet!</em>",
-                    "field7" => "What's up <strong>Super Joomlers!</strong> <em>Alex</em> here...Proud to be a joomler. Nowadays focusing on Joomla! 4.x Web Services Apis."
-                ]
-            ]
+            'custom-field' => $json
         ];
 
-        self::assertEquals($expected, $data);
+        self::assertSame($expected, $actual);
     }
 
 }

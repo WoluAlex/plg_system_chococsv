@@ -27,27 +27,6 @@ use const PHP_SAPI;
 
 // phpcs:enable PSR1.Files.SideEffects
 
-ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
-ini_set('error_log', '');
-ini_set('log_errors', 1);
-ini_set('log_errors_max_len', 4096);
-ini_set('auto_detect_line_endings', 1);
-
-defined('IS_CLI') || define('IS_CLI', PHP_SAPI == 'cli');
-defined('CUSTOM_LINE_END') || define('CUSTOM_LINE_END', IS_CLI ? PHP_EOL : '<br>');
-defined('ANSI_COLOR_RED') || define('ANSI_COLOR_RED', IS_CLI ? "\033[31m" : '');
-defined('ANSI_COLOR_GREEN') || define('ANSI_COLOR_GREEN', IS_CLI ? "\033[32m" : '');
-defined('ANSI_COLOR_BLUE') || define('ANSI_COLOR_BLUE', IS_CLI ? "\033[34m" : '');
-defined('ANSI_COLOR_NORMAL') || define('ANSI_COLOR_NORMAL', IS_CLI ? "\033[0m" : '');
-
-defined('CSV_SEPARATOR') || define('CSV_SEPARATOR', "\x2C");
-defined('CSV_ENCLOSURE') || define('CSV_ENCLOSURE', "\x22");
-defined('CSV_ESCAPE') || define('CSV_ESCAPE', "\x22");
-defined('CSV_ENDING') || define('CSV_ENDING', "\x0D\x0A");
-
-//Csv starts at line number : 2
-defined('CSV_START') || define('CSV_START', 2);
-
 /**
  *
  */

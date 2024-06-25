@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @copyright (c) 2009 - present. Mr Alexandre J-S William ELISÉ. All rights reserved.
  * @license       GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)
@@ -23,22 +21,19 @@ use Joomla\DI\Container;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Tests\Integration\IntegrationTest;
+use Tests\Integration\ConsoleIntegrationTest;
 
 
-final class DeployArticleConsoleCommandTest extends IntegrationTest
+final class DeployArticleConsoleCommandTest extends ConsoleIntegrationTest
 {
-    /**
-     * @var ConsoleApplication|null $app
-     */
-    protected ConsoleApplication|null $app = null;
-    private DeployArticleConsoleCommand|null $deployArticleConsoleCommand = null;
+    protected $app;
+    private $deployArticleConsoleCommand;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app->getLanguage()->load('plg_console_chococsv') || $this->app->getLanguage()->load('com_chococsv');
+        $this->app->getLanguage()->load('plg_system_chococsv');
         $this->deployArticleConsoleCommand = new DeployArticleConsoleCommand();
     }
 
@@ -68,10 +63,11 @@ final class DeployArticleConsoleCommandTest extends IntegrationTest
 
     public function testDeploy()
     {
-        $input    = new ArgvInput([]);
-        $output   = new ConsoleOutput();
+        $input = new ArgvInput([]);
+        $output = new ConsoleOutput();
         $expected = Command::SUCCESS;
-        $actual   = $this->deployArticleConsoleCommand->execute($input, $output);
+        $_ENV['NO_COLOR'] = 1;
+        $actual = $this->deployArticleConsoleCommand->execute($input, $output);
         self::assertSame($expected, $actual);
     }
 }

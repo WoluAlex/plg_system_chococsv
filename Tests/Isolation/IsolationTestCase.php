@@ -16,7 +16,6 @@ use Joomla\CMS\Factory;
 use Joomla\Session\Session;
 use Joomla\Session\SessionInterface;
 
-require_once __DIR__ . '/bootstrap.php';
 
 /**
  * Base Unit Test case for common behaviour across unit tests

@@ -12,10 +12,8 @@ declare(strict_types=1);
  */
 
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Installer\InstallerScriptInterface;
-use Joomla\Database\DatabaseDriver;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
@@ -44,13 +42,6 @@ return new class () implements ServiceProviderInterface {
                  * @since  0.1.0
                  */
                 protected $minimumJoomla = '4.0.0';
-
-                protected $deleteFolders = [
-                    '/plugins/system/chococsv/forms',
-                    '/plugins/system/chococsv/language',
-                    '/plugins/system/chococsv/services',
-                    '/plugins/system/chococsv/src',
-                ];
 
                 public function __construct(private readonly AdministratorApplication $app)
                 {
