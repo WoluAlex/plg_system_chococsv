@@ -70,7 +70,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
 
         if (Factory::getApplication()->isClient('site')) {
             return [
-                'onAfterRoute' => 'onAfterRoute'
+                'onAfterInitialise' => 'onAfterInitialise',
             ];
         }
 
@@ -85,7 +85,21 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         if (Factory::getApplication()->isClient('cli')) {
             $this->registerCLICommands();
         }
+    }
 
+    public function onAfterInitialise()
+    {
+        $jinput = $this->getApplication()->getInput();
+
+        // Intercepting calls to old Chococsv component implementation
+        // This component does not exists. It's a "trick" to keep old behaviour that some users was already familiar with
+        if (($jinput->getCmd('option') === 'com_chococsv')
+            && ($jinput->getCmd('task') === 'csv.deploy')
+        ) {
+            $this->deploy();
+            $this->getApplication()->close();
+            return; // not stricly useful but not harmful neither
+        }
     }
 
     public function handleChococsvConfigForm(Event $event): bool
@@ -103,20 +117,6 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         $this->loadAssets();
         return true;
     }
-
-
-    public function onAfterRoute()
-    {
-        $jinput = $this->getApplication()->input;
-
-        // Intercepting calls to old Chococsv component implementation
-        if (($jinput->getCmd('option') === 'plg_system_chococsv')
-            && ($jinput->getCmd('task') === 'csv.deploy')
-        ) {
-            $this->deploy();
-        }
-    }
-
 
     private function loadAssets(): void
     {
