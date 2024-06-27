@@ -87,7 +87,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         }
     }
 
-    public function onAfterInitialise()
+    public function onAfterInitialise(Event $event)
     {
         $jinput = $this->getApplication()->getInput();
 
@@ -97,8 +97,8 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             && ($jinput->getCmd('task') === 'csv.deploy')
         ) {
             $this->deploy();
-            $this->getApplication()->close();
-            return; // not stricly useful but not harmful neither
+            $event->stopPropagation();
+            return;
         }
     }
 

@@ -37,26 +37,7 @@ return new class implements ServiceProviderInterface {
 
     public function register(Container $container)
     {
-        $computedAutoloaderFilename = Path::check(
-            JPATH_PLUGINS . '/system/chococsv/vendor/autoload.php',
-            JPATH_PLUGINS
-        );
-
-        if (defined('PROJECT_TEST') && defined('PROJECT_ROOT')) {
-            $computedAutoloaderFilename = Path::check(
-                PROJECT_ROOT . '/src/vendor/autoload.php',
-                PROJECT_ROOT
-            ); //useful ONLY when testing
-        }
-        if (!file_exists($computedAutoloaderFilename)) {
-            Factory::getApplication()->enqueueMessage(
-                sprintf('File not found %s is required to continue. Stopping here.', $computedAutoloaderFilename),
-                'warning'
-            );
-            return;
-        }
-
-        $container->set(PluginInterface::class, function (Container $container) use ($computedAutoloaderFilename) {
+        $container->set(PluginInterface::class, function (Container $container) {
             $dispatcher = $container->get(DispatcherInterface::class);
             $plugin = PluginHelper::getPlugin('system', 'chococsv');
 
@@ -71,21 +52,12 @@ return new class implements ServiceProviderInterface {
                 }
             }
 
-// Setup the autoloaders.
+            // Setup the autoloaders.
             JLoader::setup();
 
-// Create the Composer autoloader
-            /** @var \Composer\Autoload\ClassLoader $loader */
-            $loader = require $computedAutoloaderFilename;
+            JLoader::registerNamespace('League\\Csv\\', dirname(__DIR__) . '/vendor/league/csv/src');
 
-// We need to pull our decorated class loader into memory before unregistering Composer's loader
-            class_exists('\\Joomla\\CMS\\Autoload\\ClassLoader');
-
-            $loader->unregister();
-
-// Decorate Composer autoloader
-            spl_autoload_register([new \Joomla\CMS\Autoload\ClassLoader($loader), 'loadClass'], true, true);
-
+            JLoader::registerNamespace('AlexApi\\Plugin\\System\\Chococsv\\', dirname(__DIR__) . '/src');
 
             $extension = (new Chococsv($dispatcher, (array)$plugin));
             $extension->setApplication(Factory::getApplication());
