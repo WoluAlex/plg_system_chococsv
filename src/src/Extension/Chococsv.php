@@ -21,10 +21,15 @@ use Exception;
 use Generator;
 use Joomla\Application\ApplicationEvents;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Router;
+use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\Event\Event;
@@ -97,8 +102,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
             && ($jinput->getCmd('task') === 'csv.deploy')
         ) {
             $this->deploy();
-            $event->stopPropagation();
-            return;
+            die;
         }
     }
 
