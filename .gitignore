@@ -16,3 +16,6 @@
 /docs/*
 /vendor/
 /composer.lock
+/j4x/
+/j51x/
+/j52x/
