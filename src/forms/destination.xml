@@ -37,7 +37,7 @@
                    validate="url"
                    required="true"
                    icon="globe"
-                   class="chococsv__destination--baseurl"
+                   class="chococsv__destination--baseurl should-blur"
                    showon="is_active:1"
             />
             <field name="base_path"
@@ -50,7 +50,7 @@
                    maxlength="50"
                    validate="url"
                    required="true"
-                   class="chococsv__destination--basepath"
+                   class="chococsv__destination--basepath should-blur"
                    showon="is_active:1"
             />
             <field name="auth_apikey"
@@ -61,7 +61,7 @@
                    size="100"
                    filter="raw"
                    required="true"
-                   class="chococsv__destination--apikey"
+                   class="chococsv__destination--apikey should-blur"
                    showon="is_active:1"
             />
             <field name="is_local"
