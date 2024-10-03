@@ -14,18 +14,21 @@ services:
         environment:
             JOOMLA_DB_HOST: db
             JOOMLA_DB_PASSWORD: example
-            JOOMLA_SITE_NAME: CHOCOCSV J44X
-            JOOMLA_ADMIN_USER: Chococsv Hero J44x
-            JOOMLA_ADMIN_USERNAME: pro-chococsv-j44x
-            JOOMLA_ADMIN_PASSWORD: Chococsv#Secured
-            JOOMLA_ADMIN_EMAIL: pro.chococsv.j44x@example.org
+            JOOMLA_DB_TYPE: mysqli
+            JOOMLA_DB_PREFIX: j44x_
+            JOOMLA_SITE_NAME: "CHOCOCSV J44X"
+            JOOMLA_ADMIN_USER: "Chococsv Hero J44x"
+            JOOMLA_ADMIN_USERNAME: "chococsv"
+            JOOMLA_ADMIN_PASSWORD: "Chococsv#Secured"
+            JOOMLA_ADMIN_EMAIL: "chococsv@example.org"
             JOOMLA_SMTP_HOST: "fakesmtp:1025"
-            JOOMLA_EXTENSIONS_PATHS: "./extensions"
+            JOOMLA_EXTENSIONS_PATHS: "/var/www/html/tmp"
         ports:
             - "127.0.0.1:54490:80/tcp"
         volumes:
             - "./j4x:/var/www/html"
             - "./zzz-custom.ini:/usr/local/etc/php/conf.d/zzz-custom.ini"
+            - "./extensions:/var/www/html/tmp"
         networks:
             - appnet
             - dbnet
@@ -40,18 +43,21 @@ services:
         environment:
             JOOMLA_DB_HOST: db
             JOOMLA_DB_PASSWORD: example
-            JOOMLA_SITE_NAME: CHOCOCSV J51X
-            JOOMLA_ADMIN_USER: Chococsv Hero J51x
-            JOOMLA_ADMIN_USERNAME: pro-chococsv-j51x
-            JOOMLA_ADMIN_PASSWORD: Chococsv#Secured
-            JOOMLA_ADMIN_EMAIL: pro.chococsv.j51x@example.org
+            JOOMLA_DB_TYPE: mysqli
+            JOOMLA_DB_PREFIX: j51x_
+            JOOMLA_SITE_NAME: "CHOCOCSV J51X"
+            JOOMLA_ADMIN_USER: "Chococsv Hero J51x"
+            JOOMLA_ADMIN_USERNAME: "chococsv"
+            JOOMLA_ADMIN_PASSWORD: "Chococsv#Secured"
+            JOOMLA_ADMIN_EMAIL: "chococsv@example.org"
             JOOMLA_SMTP_HOST: "fakesmtp:1025"
-            JOOMLA_EXTENSIONS_PATHS: "./extensions"
+            JOOMLA_EXTENSIONS_PATHS: "/var/www/html/tmp"
         ports:
             - "127.0.0.1:54510:80/tcp"
         volumes:
             - "./j51x:/var/www/html"
             - "./zzz-custom.ini:/usr/local/etc/php/conf.d/zzz-custom.ini"
+            - "./extensions:/var/www/html/tmp"
         networks:
             - appnet
             - dbnet
@@ -67,18 +73,21 @@ services:
         environment:
             JOOMLA_DB_HOST: db
             JOOMLA_DB_PASSWORD: example
-            JOOMLA_SITE_NAME: CHOCOCSV J52X
-            JOOMLA_ADMIN_USER: Chococsv Hero J52x
-            JOOMLA_ADMIN_USERNAME: pro-chococsv-j52x
-            JOOMLA_ADMIN_PASSWORD: Chococsv#Secured
-            JOOMLA_ADMIN_EMAIL: pro.chococsv.j52x@example.org
+            JOOMLA_DB_TYPE: mysqli
+            JOOMLA_DB_PREFIX: j52x_
+            JOOMLA_SITE_NAME: "CHOCOCSV J52X"
+            JOOMLA_ADMIN_USER: "Chococsv Hero J52x"
+            JOOMLA_ADMIN_USERNAME: "chococsv"
+            JOOMLA_ADMIN_PASSWORD: "Chococsv#Secured"
+            JOOMLA_ADMIN_EMAIL: "chococsv@example.org"
             JOOMLA_SMTP_HOST: "fakesmtp:1025"
-            JOOMLA_EXTENSIONS_PATHS: "./extensions"
+            JOOMLA_EXTENSIONS_PATHS: "/var/www/html/tmp"
         ports:
             - "127.0.0.1:54520:80/tcp"
         volumes:
             - "./j52x:/var/www/html"
             - "./zzz-custom.ini:/usr/local/etc/php/conf.d/zzz-custom.ini"
+            - "./extensions:/var/www/html/tmp"
         networks:
             - appnet
             - dbnet
@@ -88,7 +97,7 @@ services:
             fakesmtp:
                 condition: service_started
     db:
-        image: mysql:8.4
+        image: mysql:8.0
         restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: example
