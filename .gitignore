@@ -19,3 +19,11 @@
 /j4x/
 /j51x/
 /j52x/
+!/extenstions/index.html
+/extensions/*.zip
+/extensions/*.tar
+/extensions/*.tar.gz
+/extensions/*.tar.bz2
+/extensions/*.gz
+/extensions/*.bz2
+/extensions/*.zstd
