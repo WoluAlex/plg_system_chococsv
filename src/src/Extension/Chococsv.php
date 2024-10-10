@@ -21,10 +21,15 @@ use Exception;
 use Generator;
 use Joomla\Application\ApplicationEvents;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Router;
+use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\Event\Event;
@@ -70,7 +75,7 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
 
         if (Factory::getApplication()->isClient('site')) {
             return [
-                'onAfterRoute' => 'onAfterRoute'
+                'onAfterInitialise' => 'onAfterInitialise',
             ];
         }
 
@@ -85,7 +90,20 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         if (Factory::getApplication()->isClient('cli')) {
             $this->registerCLICommands();
         }
+    }
 
+    public function onAfterInitialise(Event $event)
+    {
+        $jinput = $this->getApplication()->getInput();
+
+        // Intercepting calls to old Chococsv component implementation
+        // This component does not exists. It's a "trick" to keep old behaviour that some users was already familiar with
+        if (($jinput->getCmd('option') === 'com_chococsv')
+            && ($jinput->getCmd('task') === 'csv.deploy')
+        ) {
+            $this->deploy();
+            die;
+        }
     }
 
     public function handleChococsvConfigForm(Event $event): bool
@@ -103,20 +121,6 @@ final class Chococsv extends CMSPlugin implements SubscriberInterface
         $this->loadAssets();
         return true;
     }
-
-
-    public function onAfterRoute()
-    {
-        $jinput = $this->getApplication()->input;
-
-        // Intercepting calls to old Chococsv component implementation
-        if (($jinput->getCmd('option') === 'plg_system_chococsv')
-            && ($jinput->getCmd('task') === 'csv.deploy')
-        ) {
-            $this->deploy();
-        }
-    }
-
 
     private function loadAssets(): void
     {
